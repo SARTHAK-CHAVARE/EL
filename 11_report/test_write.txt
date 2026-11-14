@@ -1,0 +1,4 @@
+# Presentations and Reports Directory
+This directory stores project reports, slide decks, and presentation materials.
+Generated Phase II presentation file:
+- SDG_Phase_II_Presentation.pptx (available in scratch directory)
