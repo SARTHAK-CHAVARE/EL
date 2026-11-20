@@ -45,7 +45,7 @@ _Written 20 Nov 2026 from the repository, the code, and the pilot27 / cal2 outpu
   batch runner exist.
 * **No schedule output a person or the ESP32 can use.** There is no Gantt chart, no power-vs-time plot and no schedule export.
 * **No monthly-bill view.** Results exist only in normalised ρ (₹/kW per 8-hour shift).
-* **No safety guard.** Nothing guarantees that a returned schedule is never more expensive than the energy-only schedule B when a solve is unproven. **[Corrected 20 Nov 2026]** This bullet originally claimed that the 18 cost-unproven C runs in cal2 returned schedules "40–185 % more expensive" than B. That was an analysis error: C's cost at ρ was compared with B's cost at ρ = 0. At the same ρ, none of them was worse than B, and the front later proved 17 of the 18 optimal. The guard is still required as a design property.
+* **No safety guard.** Nothing guarantees that a returned schedule is never more expensive than the energy-only schedule B when a solve is unproven. **[Corrected 20 Nov 2026]** This bullet originally claimed that the 18 cost-unproven C runs in cal2 returned schedules "40–185 % more expensive" than B. That was an analysis error: C's cost at ρ was compared with B's cost at ρ = 0. At the same ρ, none of them was worse than B, and the front later proved all 18 optimal (`docs/handoff/FRONT-AND-BILLING.md`). The guard is still required as a design property.
 * **Reproducibility gaps.** The 141 Phase 3 files exist only as untracked files (and in your zip). `requirements.txt` has
   `ortools>=9.10` unpinned, while results were produced with 9.15.6755.
 * **Documentation credibility.** README.md schedules hardware assembly for Jan 2027 and the final report for Feb 2027, both after the
