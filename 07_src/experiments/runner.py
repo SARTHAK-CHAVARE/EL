@@ -24,11 +24,12 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence
 
-from model import (SolverConfig, evaluate_schedule, inr_to_paise, solve_min_peak, solve_strategy_a,
-                   solve_strategy_b, solve_strategy_c)
+from model import (SolveStatus, SolverConfig, best_for_rho, break_even, ec_peak_front, evaluate_schedule, inr_to_paise,
+                   recommend, solve_min_peak, solve_strategy_a, solve_strategy_b, solve_strategy_c,
+                   structural_peak_lower_bound, tec_lower_bound)
 
-from .baselines import fcfs_schedule, spt_schedule
-from .design import Design, Task, enumerate_tasks
+from .baselines import energy_greedy_schedule, fcfs_schedule, peak_capped_candidates, spt_schedule
+from .design import MAIN_VERSION, Design, MainDesign, Task, enumerate_tasks
 from .generator import generate_instance
 
 COLUMNS = [
@@ -39,8 +40,20 @@ COLUMNS = [
     "stage_values", "makespan", "sum_completion", "peak_w", "energy_w_min", "ec_int", "dc_int", "tec_int",
     "wall_time_s", "num_workers", "random_seed",
 ]
+#: SPEC-003 rows carry these additional columns (old designs keep exactly COLUMNS).
+COLUMNS_MAIN = COLUMNS + [
+    "task_wall_s", "task_cpu_s", "front_label", "cap_w", "front_point_idx", "front_complete", "front_termination",
+    "front_n_points", "front_n_solves", "required_proven", "ec_proven", "peak_proven", "makespan_proven",
+    "structural_peak_lb_w", "tec_lower_bound", "gap", "choice", "rule_cap_w",
+    "break_even_inr", "break_even_kind", "break_even_ref",
+]
 #: columns that legitimately differ between identical runs (machine speed); excluded when checking determinism
-NONDETERMINISTIC_COLUMNS = ("wall_time_s",)
+NONDETERMINISTIC_COLUMNS = ("wall_time_s", "task_wall_s", "task_cpu_s")
+
+
+def columns_for(design_or_version) -> List[str]:
+    v = design_or_version if isinstance(design_or_version, str) else design_or_version.version
+    return COLUMNS_MAIN if v == MAIN_VERSION else COLUMNS
 
 
 class RunnerError(RuntimeError):
@@ -77,6 +90,8 @@ def _row(base: Dict, strategy: str, rho_paise: int, status: str, proven: bool, r
 
 def run_task(design: Design, task: Task) -> List[Dict]:
     """Solve every strategy on one generated instance and return result rows."""
+    if isinstance(design, MainDesign):
+        return run_task_main(design, task)
     inst, meta = generate_instance(design, task)
     cfg = _solver_config(design)
     base = dict(
@@ -106,17 +121,129 @@ def run_task(design: Design, task: Task) -> List[Dict]:
     return rows
 
 
+def derived_c_status(front_complete: bool, makespan_proven: bool) -> tuple:
+    """(status, proven_stages) of C(rho) read off the front, with the direct-C semantics (stage 1 TEC, stage 2 C_max):
+    TEC is proven only if the front is complete; OPTIMAL needs the makespan tie-break proven as well."""
+    stages = (1 if front_complete else 0) + (1 if front_complete and makespan_proven else 0)
+    return ("OPTIMAL" if stages == 2 else "FEASIBLE"), stages
+
+
+def _required_proven(label: str, res) -> bool:
+    if label == "cap":
+        return res.proven_stages >= 1 or res.status == SolveStatus.INFEASIBLE
+    return res.proven_stages >= 1        # top: EC stage; P: min-peak stage
+
+
+def run_task_main(design: MainDesign, task: Task) -> List[Dict]:
+    """SPEC-003 protocol (docs/handoff/SPEC-003-main-study.md section 5). Every solve and every derived quantity is
+    a row; nothing is dropped. Statuses: solver rows keep CP-SAT's status; derived rows are OPTIMAL only when proven."""
+    w0, c0 = time.perf_counter(), time.process_time()
+    inst, meta = generate_instance(design, task)
+    cfg = _solver_config(design)
+    base = dict(
+        design_version=design.version, design_digest=design.digest(), instance_id=meta.instance_id,
+        gamma=meta.gamma, w_target=meta.w_target, w_real=meta.w_real, cv=meta.cv, seed_idx=meta.seed_idx,
+        gen_attempts=meta.attempts, n_jobs=len(inst.jobs), n_machines=len(inst.machines), T=inst.T,
+        delta_t_min=inst.delta_t_min, tariff_off_paise=meta.off_paise, tariff_normal_paise=meta.normal_paise,
+        tariff_peak_paise=meta.peak_paise, structural_peak_lb_w=structural_peak_lower_bound(inst))
+    rows: List[Dict] = []
+    a, b = solve_strategy_a(inst, cfg), solve_strategy_b(inst, cfg)
+    bmin = solve_strategy_b(inst, cfg, "min_peak")
+    for res in (a, b, bmin):
+        rows.append(_row(base, res.strategy, 0, res.status.value, res.proven_optimal, res))
+    front = ec_peak_front(inst, cfg)
+    fx = dict(front_complete=int(front.complete), front_termination=front.termination,
+              front_n_points=len(front.points), front_n_solves=front.n_solves)
+    for s in front.solves:
+        r = _row(base, "P" if s.label == "P" else f"FRONT_{s.label}", 0, s.result.status.value,
+                 s.result.proven_optimal, s.result)
+        r.update(fx, front_label=s.label, cap_w="" if s.cap_w is None else s.cap_w,
+                 required_proven=int(_required_proven(s.label, s.result)))
+        rows.append(r)
+    for i, p in enumerate(front.points):
+        r = _row(base, "FRONT_PT", 0, "POINT", bool(front.complete and p.ec_proven), metrics=p.metrics)
+        r.update(fx, front_label=p.source, front_point_idx=i, cap_w="" if p.cap_w is None else p.cap_w,
+                 ec_proven=int(p.ec_proven), peak_proven=int(p.peak_proven), makespan_proven=int(p.makespan_proven))
+        rows.append(r)
+    rho_x = inr_to_paise(design.cross_check_rho_inr)
+    c_direct = solve_strategy_c(inst, rho_x, cfg)
+    rows.append(_row(base, "C", rho_x, c_direct.status.value, c_direct.proven_optimal, c_direct))
+    rule_scheds = {}
+    for name, fn in (("FCFS", fcfs_schedule), ("SPT", spt_schedule), ("EG", energy_greedy_schedule)):
+        t0 = time.perf_counter()
+        sched = fn(inst)
+        wall = time.perf_counter() - t0
+        rule_scheds[name] = sched
+        rows.append(_row(base, name, 0, "NO_SCHEDULE", False, wall=wall) if sched is None else
+                    _row(base, name, 0, "HEURISTIC", False, metrics=evaluate_schedule(inst, sched, 0), wall=wall))
+    t0 = time.perf_counter()
+    pcg_cands = [(cap, sched, evaluate_schedule(inst, sched, 0)) for cap, sched in peak_capped_candidates(inst)]
+    pcg_wall = time.perf_counter() - t0
+    for rho_inr in design.rho_inr:
+        rho = inr_to_paise(rho_inr)
+        lb = tec_lower_bound(front, rho)
+        pt = best_for_rho(front, rho)
+        if pt is None:
+            r = _row(base, "C_front", rho, "NO_SCHEDULE", False)
+        else:
+            st, stages = derived_c_status(front.complete, pt.makespan_proven)
+            r = _row(base, "C_front", rho, st, st == "OPTIMAL", metrics=evaluate_schedule(inst, pt.schedule, rho))
+            r.update(proven_stages=stages, n_stages=2, primary_proven=int(front.complete),
+                     front_point_idx=front.points.index(pt),
+                     gap="" if lb is None else repr(float((r["tec_int"] - lb) / r["tec_int"])))
+        r.update(fx, tec_lower_bound="" if lb is None else lb)
+        rows.append(r)
+        pcg = None
+        if pcg_cands:
+            pcg = min(enumerate(pcg_cands),
+                      key=lambda kv: (kv[1][2].ec_int + 60 * rho * kv[1][2].peak_w, kv[1][2].makespan, kv[0]))[1]
+        if pcg is None:
+            rows.append(_row(base, "PCG", rho, "NO_SCHEDULE", False, wall=pcg_wall))
+        else:
+            r = _row(base, "PCG", rho, "HEURISTIC", False, metrics=evaluate_schedule(inst, pcg[1], rho), wall=pcg_wall)
+            r["rule_cap_w"] = "" if pcg[0] is None else pcg[0]
+            rows.append(r)
+        cands = {"B": b.schedule, "B_minpeak": bmin.schedule, "A": a.schedule, "EG": rule_scheds["EG"],
+                 "PCG": None if pcg is None else pcg[1], "FCFS": rule_scheds["FCFS"], "SPT": rule_scheds["SPT"],
+                 "C": c_direct.schedule if rho == rho_x else None}
+        try:
+            g = recommend(inst, rho, front, cands)
+            r = _row(base, "GUARD", rho, "OPTIMAL" if g.proven_optimal else "FEASIBLE", g.proven_optimal,
+                     metrics=g.metrics)
+            r.update(choice=g.choice, tec_lower_bound="" if g.tec_lower_bound is None else g.tec_lower_bound,
+                     gap="" if g.gap is None else repr(float(g.gap)))
+        except ValueError:
+            r = _row(base, "GUARD", rho, "NO_SCHEDULE", False)
+        r.update(fx)
+        rows.append(r)
+    for ref_name, ref in (("B", b), ("B_minpeak", bmin)):
+        if ref.metrics is None:
+            r = _row(base, f"BE_{ref_name}", 0, "UNDETERMINED", False)
+            r.update(break_even_kind="undetermined", break_even_ref=ref_name)
+        else:
+            be = break_even(front, ref.metrics.ec_int, ref.metrics.peak_w, ref_name)
+            r = _row(base, f"BE_{ref_name}", 0, be.kind.upper(), be.is_exact)
+            r.update(break_even_inr="" if be.rho_inr is None else str(be.rho_inr), break_even_kind=be.kind,
+                     break_even_ref=ref_name, peak_w="" if be.via_peak_w is None else be.via_peak_w)
+        r.update(fx)
+        rows.append(r)
+    task_wall, task_cpu = round(time.perf_counter() - w0, 4), round(time.process_time() - c0, 4)
+    for r in rows:
+        r.update(task_wall_s=task_wall, task_cpu_s=task_cpu)
+    return rows
+
+
 # --- atomic part files ---------------------------------------------------------------------------
 
 def _part_path(out: Path, instance_id: str) -> Path:
     return out / "parts" / f"{instance_id}.csv"
 
 
-def _write_part(out: Path, instance_id: str, rows: Sequence[Dict]) -> None:
+def _write_part(out: Path, instance_id: str, rows: Sequence[Dict], columns: Sequence[str] = COLUMNS) -> None:
     final = _part_path(out, instance_id)
     tmp = final.with_name(f".{final.name}.tmp.{os.getpid()}")
     with open(tmp, "w", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=COLUMNS)
+        w = csv.DictWriter(fh, fieldnames=list(columns), restval="")
         w.writeheader()
         w.writerows(rows)
         fh.flush()
@@ -127,7 +254,7 @@ def _write_part(out: Path, instance_id: str, rows: Sequence[Dict]) -> None:
 def _worker(args):
     design, task, out = args
     rows = run_task(design, task)
-    _write_part(Path(out), task.instance_id, rows)
+    _write_part(Path(out), task.instance_id, rows, columns_for(design))
     return task.instance_id, len(rows)
 
 
@@ -207,7 +334,7 @@ def run_experiment(design: Design, out: Path, workers: int = 1, limit: Optional[
              f"already_done={counts['skipped']} to_run={len(todo)} workers={workers}")
     if workers <= 1:
         for t in todo:
-            _write_part(out, t.instance_id, run_task(design, t))
+            _write_part(out, t.instance_id, run_task(design, t), columns_for(design))
             counts["ran"] += 1
             progress(f"[runner] {counts['skipped'] + counts['ran']}/{len(tasks)} {t.instance_id}")
     else:
@@ -235,7 +362,9 @@ def aggregate(out: Path) -> Path:
     mf = out / "manifest.json"
     if not mf.exists():
         raise RunnerError(f"{mf} not found: cannot verify which design the parts belong to")
-    digest = json.loads(mf.read_text())["design_digest"]
+    manifest = json.loads(mf.read_text())
+    digest = manifest["design_digest"]
+    columns = columns_for(manifest.get("design_version", ""))
     bad = _foreign_parts(out, digest)
     if bad:
         raise RunnerError(f"{len(bad)} part file(s) in {out / 'parts'} do not belong to design {digest} "
@@ -244,11 +373,14 @@ def aggregate(out: Path) -> Path:
     for p in sorted((out / "parts").glob("*.csv")):
         with open(p, newline="") as fh:
             rows.extend(csv.DictReader(fh))
-    rows.sort(key=lambda r: (r["instance_id"], r["strategy"], int(r["rho_paise"])))
+    def _int(v):
+        return int(v) if v not in (None, "") else -1
+    rows.sort(key=lambda r: (r["instance_id"], r["strategy"], int(r["rho_paise"]), _int(r.get("front_point_idx")),
+                             -_int(r.get("cap_w"))))
     dest = out / "results.csv"
     tmp = dest.with_suffix(".csv.tmp")
     with open(tmp, "w", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=COLUMNS)
+        w = csv.DictWriter(fh, fieldnames=columns, restval="")
         w.writeheader()
         w.writerows(rows)
     os.replace(tmp, dest)

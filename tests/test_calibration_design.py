@@ -51,7 +51,9 @@ def test_cal2_is_separate_and_versioned():
     assert CALIBRATION_VERSION != DESIGN_VERSION
     assert d.digest() not in (FULL_DIGEST, PILOT_DIGEST, DESIGN_SMOKE.digest())
     assert d.base_seed != DESIGN_FULL.base_seed                   # independent draws, not a re-use of pilot instances
-    assert DESIGNS == {"smoke": DESIGN_SMOKE, "full": DESIGN_FULL, "cal2": DESIGN_CAL2}
+    # the registry may grow (SPEC-003 designs were added on 20 Nov); the original entries must stay exactly as they were
+    assert {k: DESIGNS[k] for k in ("smoke", "full", "cal2")} == {"smoke": DESIGN_SMOKE, "full": DESIGN_FULL,
+                                                                    "cal2": DESIGN_CAL2}
     # same instance size / tariff / power / budgets as v1 => comparable with the pilot
     for f in ("n_jobs", "n_machines", "T", "delta_t_min", "base_kw", "mean_power_kw", "shift_start_hour", "normal_inr",
               "proc_noise", "solver_time_limit_s", "solver_det_time_limit", "tiebreak_time_limit_s",
