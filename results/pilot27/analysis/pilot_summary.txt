@@ -1,0 +1,273 @@
+## 1 optimality by strategy (rows; OPTIMAL = all stages proven)
+            n  optimal  stage1_proven  max_wall  optimal_pct  stage1_pct
+strategy                                                                
+A          27       27             27      2.95       100.00      100.00
+B          27       27             27      1.09       100.00      100.00
+B_maxpeak  27       25             27     25.15        92.59      100.00
+B_minpeak  27       27             27      2.29       100.00      100.00
+C          81       59             75     67.83        72.84       92.59
+P          27       27             27     48.07       100.00      100.00
+
+## 2 stage-wise completion: (strategy, proven_stages/n_stages) counts, unproven stage runtime
+                                            n  wall_mean  wall_min  wall_max
+strategy  proven_stages n_stages status                                     
+A         2             2        OPTIMAL   27       1.36      0.37      2.95
+B         2             2        OPTIMAL   27       0.71      0.40      1.09
+B_maxpeak 2             3        FEASIBLE   2      24.10     23.06     25.15
+          3             3        OPTIMAL   25       2.24      0.44     14.50
+B_minpeak 3             3        OPTIMAL   27       1.09      0.45      2.29
+C         0             2        FEASIBLE   6      61.07     55.41     66.18
+          1             2        FEASIBLE  16      29.52     13.83     67.83
+          2             2        OPTIMAL   59       2.47      0.55     19.92
+P         3             3        OPTIMAL   27       7.31      0.78     48.07
+
+## 3 runtime (s) by strategy
+           count  mean  50%   95%   max
+strategy                               
+A          27.00  1.36 1.22  2.68  2.95
+B          27.00  0.71 0.71  1.03  1.09
+B_maxpeak  27.00  3.86 0.99 20.49 25.15
+B_minpeak  27.00  1.09 0.94  2.09  2.29
+C          81.00 12.15 1.81 60.94 67.83
+P          27.00  7.31 1.32 40.95 48.07
+
+## 3b runtime of proven vs unproven rows
+                  count  mean  median   max
+strategy  proven                           
+A         True       27  1.36    1.22  2.95
+B         True       27  0.71    0.71  1.09
+B_maxpeak False       2 24.10   24.10 25.15
+          True       25  2.24    0.89 14.50
+B_minpeak True       27  1.09    0.94  2.29
+C         False      22 38.12   36.05 67.83
+          True       59  2.47    1.22 19.92
+P         True       27  7.31    1.32 48.07
+
+## 4 runtime of C and P by gamma / W / CV (mean, median, max; share not fully OPTIMAL)
+-- by gamma
+                 n  mean_s  median_s  max_s  not_optimal
+strategy gamma                                          
+C        1      27   12.36      2.37  67.83            7
+         19/14  27   14.32      1.81  63.13            9
+         7/4    27    9.77      1.47  66.18            6
+P        1       9    4.79      1.32  18.19            0
+         19/14   9   11.91      1.49  48.07            0
+         7/4     9    5.24      1.20  25.36            0
+-- by w_target
+                    n  mean_s  median_s  max_s  not_optimal
+strategy w_target                                          
+C        0.40      27   14.29      3.28  63.14            8
+         0.70      27   21.03     13.83  67.83           14
+         0.90      27    1.14      0.95   3.20            0
+P        0.40       9    1.94      1.84   4.27            0
+         0.70       9   18.86     15.83  48.07            0
+         0.90       9    1.14      1.14   1.49            0
+-- by cv
+                n  mean_s  median_s  max_s  not_optimal
+strategy cv                                            
+C        0     27    3.92      1.25  17.45            5
+         0.35  27   23.61     12.23  67.83           12
+         0.75  27    8.93      2.78  54.57            5
+P        0      9    0.90      0.93   1.06            0
+         0.35   9   11.33      2.96  47.64            0
+         0.75   9    9.71      1.84  48.07            0
+-- by rho_paise
+                     n  mean_s  median_s  max_s  not_optimal
+strategy rho_paise                                          
+C        500        27    2.47      1.06  16.28            1
+         1400       27   12.34      4.28  57.60           10
+         5000       27   21.65      3.20  67.83           11
+P        0          27    7.31      1.32  48.07            0
+
+## 5 savings of C vs B (%), stratified cluster bootstrap, per rho (valid rows only)
+   rho_inr  n_total  n_valid  n_excluded  n_missing  n_unproven  n_cells_used  mean  ci_lo  ci_hi  share_meaningful
+0     5.00       27       27           0          0           0            27  0.59   0.59   0.59              0.11
+1    14.00       27       26           1          0           1            26  1.89   1.89   1.89              0.15
+2    50.00       27       22           5          0           5            22  2.87   2.87   2.87              0.14
+
+## 5b raw saving_pct per instance x rho (valid)
+rho_inr              5.00   14.00  50.00
+gamma w_target cv                       
+1     0.40     0      5.64  11.98  21.77
+               0.35   0.00   0.00    NaN
+               0.75   0.00   0.00   0.00
+      0.70     0      0.00   0.00   0.00
+               0.35   0.00   0.00   0.00
+               0.75   0.00   0.00   0.00
+      0.90     0      0.00   0.00   0.00
+               0.35   0.00   0.00   0.00
+               0.75   0.00   0.00   0.00
+19/14 0.40     0      1.80   9.40  20.72
+               0.35   0.00    NaN    NaN
+               0.75   0.00   0.00   0.00
+      0.70     0      0.00   0.00   0.00
+               0.35   0.00   0.00    NaN
+               0.75   0.00   0.00   0.00
+      0.90     0      0.00   0.00   0.00
+               0.35   0.00   0.00   0.00
+               0.75   0.00   0.00   0.00
+7/4   0.40     0      0.07   8.65  20.72
+               0.35   8.31  19.02    NaN
+               0.75   0.00   0.00   0.00
+      0.70     0      0.00   0.00   0.00
+               0.35   0.00   0.00    NaN
+               0.75   0.00   0.00   0.00
+      0.90     0      0.00   0.00   0.00
+               0.35   0.00   0.00   0.00
+               0.75   0.00   0.00   0.00
+
+## 5c share of valid instance-rho rows with saving >= 1%, >0%
+rho_inr
+5.00    0.11
+14.00   0.15
+50.00   0.14
+Name: saving_pct, dtype: float64 rho_inr
+5.00    0.15
+14.00   0.15
+50.00   0.14
+Name: saving_pct, dtype: float64
+
+## 5d mean saving by gamma x rho
+rho_inr  5.00   14.00  50.00
+gamma                       
+1         0.63   1.33   2.72
+19/14     0.20   1.18   2.96
+7/4       0.93   3.07   2.96
+
+## 5e mean saving by W x rho
+rho_inr   5.00   14.00  50.00
+w_target                     
+0.40       1.76   6.13  10.53
+0.70       0.00   0.00   0.00
+0.90       0.00   0.00   0.00
+
+## 5f mean saving by CV x rho
+rho_inr  5.00   14.00  50.00
+cv                          
+0         0.83   3.34   7.02
+0.35      0.92   2.38   0.00
+0.75      0.00   0.00   0.00
+
+## 6 trade-offs (full_valid rows): peak reduction %, energy increase %, makespan penalty %
+        peak_reduction_pct                         energy_increase_pct                        makespan_penalty_pct                        
+                      mean median  min   max count                mean median  min  max count                 mean median  min   max count
+rho_inr                                                                                                                                   
+5.00                  5.44   0.00 0.00 45.60    26                0.61   0.00 0.00 8.15    26                 1.28   0.00 0.00 33.33    26
+14.00                 4.56   0.00 0.00 45.60    17                0.14   0.00 0.00 2.44    17                 1.96   0.00 0.00 33.33    17
+50.00                 5.98   0.00 0.00 31.91    16                0.83   0.00 0.00 8.15    16                 2.08   0.00 0.00 33.33    16
+
+## 7 robustness band: saving % vs B, vs B_minpeak (best case for B), vs B_maxpeak (worst case)
+         n_valid_B  n_valid_Bmin  n_valid_Bmax  vsB  vsBmin  vsBmax
+rho_inr                                                            
+5.00            27            27            25 0.59    0.59    0.63
+14.00           26            26            24 1.89    1.89    2.04
+50.00           22            22            21 2.87    2.87    3.01
+instances with all three valid: 70
+B peak (kW) vs Bmin/Bmax peak (kW), rho-independent, per instance:
+strategy     B  B_maxpeak  B_minpeak  spread
+count    27.00      27.00      27.00   27.00
+mean     42.22      42.22      42.22    0.00
+min      18.22      18.22      18.22    0.00
+max      47.00      47.00      47.00    0.00
+instances with spread>0: 0 of 27
+
+## 7b rho*_ub (INR/kW) upper-bound break-even, states
+state_B
+no_peak_reduction_possible    23
+ok                             4
+Name: count, dtype: int64
+count   4.00
+mean    2.34
+std     2.28
+min     0.00
+25%     0.70
+50%     2.21
+75%     3.86
+max     4.95
+Name: rho_star_ub_B, dtype: float64
+          count  mean  std  min  25%  50%  75%  max
+w_target                                           
+0.40       4.00  2.34 2.28 0.00 0.70 2.21 3.86 4.95
+0.70       0.00   NaN  NaN  NaN  NaN  NaN  NaN  NaN
+0.90       0.00   NaN  NaN  NaN  NaN  NaN  NaN  NaN
+
+## 8 heuristic feasibility
+          sum  count  mean
+strategy                  
+FCFS       25     27  0.93
+SPT        17     27  0.63
+w_target  0.40  0.70  0.90
+strategy                  
+FCFS      1.00  0.89  0.89
+SPT       1.00  0.78  0.11
+gamma       1  19/14  7/4
+strategy                 
+FCFS     0.89   0.89 1.00
+SPT      0.78   0.56 0.56
+cv          0  0.35  0.75
+strategy                 
+FCFS     1.00  0.78  1.00
+SPT      0.56  0.78  0.56
+
+## 9 missing/excluded
+   rho_inr  n_total  n_valid  n_missing  n_unproven
+0     5.00       27       27          0           0
+1    14.00       27       26          0           1
+2    50.00       27       22          0           5
+saving_valid {'ok': 75, 'unproven': 6}
+full_valid {'ok': 59, 'unproven': 22}
+band_valid_Bmin {'ok': 75, 'unproven': 6}
+band_valid_Bmax {'ok': 70, 'unproven': 11}
+
+## 10 generator acceptance (one row per instance)
+          instances  mean_attempts  max_attempts  mean_w_real  min_w_real  max_w_real  acceptance_rate_pct
+w_target                                                                                                  
+0.40              9           1.00             1         0.40        0.39        0.42               100.00
+0.70              9           1.00             1         0.70        0.69        0.72               100.00
+0.90              9          12.44            26         0.90        0.90        0.92                 8.04
+gamma        1  19/14   7/4
+w_target                   
+0.40      1.00   1.00  1.00
+0.70      1.00   1.00  1.00
+0.90     17.33   5.67 14.33
+
+## 11 hardest instances (any strategy), by total solve time
+instance_id
+g1w1c1s000   170.52
+g0w1c1s000   138.53
+g1w0c1s000   136.03
+g0w0c1s000   126.95
+g1w1c2s000   124.33
+g2w1c1s000   121.57
+g0w1c2s000   105.22
+g2w0c1s000    89.98
+Name: wall_time_s, dtype: float64
+
+## 12 totals: sum solver wall (s) = 1371.3  per instance mean = 50.8  max = 170.5
+
+## 13 unproven rows detail
+    instance_id  gamma w_target    cv   strategy  rho_paise    status            stage_statuses         stage_values  wall_time_s
+12   g0w0c1s000      1     0.40  0.35  B_maxpeak          0  FEASIBLE  OPTIMAL|OPTIMAL|FEASIBLE  4982076000|32|25570        23.06
+14   g0w0c1s000      1     0.40  0.35          C        500  FEASIBLE          OPTIMAL|FEASIBLE        5749176000|32        16.28
+15   g0w0c1s000      1     0.40  0.35          C       1400  FEASIBLE          OPTIMAL|FEASIBLE        7129956000|32        27.37
+16   g0w0c1s000      1     0.40  0.35          C       5000  FEASIBLE                  FEASIBLE          12653076000        55.41
+22   g0w0c2s000      1     0.40  0.75  B_maxpeak          0  FEASIBLE  OPTIMAL|OPTIMAL|FEASIBLE  2505729600|32|18222        25.15
+45   g0w1c1s000      1     0.70  0.35          C       1400  FEASIBLE          OPTIMAL|FEASIBLE       13682274000|30        36.86
+46   g0w1c1s000      1     0.70  0.35          C       5000  FEASIBLE          OPTIMAL|FEASIBLE       23834274000|30        67.83
+55   g0w1c2s000      1     0.70  0.75          C       1400  FEASIBLE          OPTIMAL|FEASIBLE       11963653800|32        21.24
+56   g0w1c2s000      1     0.70  0.75          C       5000  FEASIBLE          OPTIMAL|FEASIBLE       22115653800|32        54.57
+95   g1w0c0s000  19/14     0.40     0          C       1400  FEASIBLE          OPTIMAL|FEASIBLE        9105600000|32        17.45
+105  g1w0c1s000  19/14     0.40  0.35          C       1400  FEASIBLE                  FEASIBLE           6631296000        57.60
+106  g1w0c1s000  19/14     0.40  0.35          C       5000  FEASIBLE                  FEASIBLE          12154416000        63.13
+125  g1w1c0s000  19/14     0.70     0          C       1400  FEASIBLE          OPTIMAL|FEASIBLE       14784600000|32        14.14
+126  g1w1c0s000  19/14     0.70     0          C       5000  FEASIBLE          OPTIMAL|FEASIBLE       24936600000|32        13.83
+135  g1w1c1s000  19/14     0.70  0.35          C       1400  FEASIBLE          OPTIMAL|FEASIBLE       13175802000|32        53.62
+136  g1w1c1s000  19/14     0.70  0.35          C       5000  FEASIBLE                  FEASIBLE          23327802000        60.94
+145  g1w1c2s000  19/14     0.70  0.75          C       1400  FEASIBLE          OPTIMAL|FEASIBLE       12658621200|32        15.87
+146  g1w1c2s000  19/14     0.70  0.75          C       5000  FEASIBLE          OPTIMAL|FEASIBLE       22810621200|32        48.72
+185  g2w0c0s000    7/4     0.40     0          C       1400  FEASIBLE          OPTIMAL|FEASIBLE        8602800000|32        14.28
+196  g2w0c1s000    7/4     0.40  0.35          C       5000  FEASIBLE                  FEASIBLE          12678942000        63.14
+216  g2w1c0s000    7/4     0.70     0          C       5000  FEASIBLE          OPTIMAL|FEASIBLE       24604800000|32        13.96
+225  g2w1c1s000    7/4     0.70  0.35          C       1400  FEASIBLE          OPTIMAL|FEASIBLE       13981938000|32        21.08
+226  g2w1c1s000    7/4     0.70  0.35          C       5000  FEASIBLE                  FEASIBLE          24133938000        66.18
+236  g2w1c2s000    7/4     0.70  0.75          C       5000  FEASIBLE          OPTIMAL|FEASIBLE       21509534400|32        35.24

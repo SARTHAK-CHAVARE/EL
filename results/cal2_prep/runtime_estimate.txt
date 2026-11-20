@@ -1,0 +1,14 @@
+DESIGN_CAL2: 90 instances, rho levels ('1', '2', '5', '14', '50'), 12 result rows per instance (5 rho-independent solves + 5 C solves + FCFS + SPT) = 1080 rows, 900 CP-SAT runs
+pilot anchors (mean CPU s per instance incl. rho=5/14/50 only): W=0.40: 57.0, W=0.70: 87.0
+
+scenario (rho=1,2 cost | interior W)   CPU-h (point; 95% bootstrap over pilot instances)   wall-h @2 workers   wall-h @1 worker
+   easy | interp          1.88  (1.29 - 2.49)    0.94    1.88
+   easy | hard-interior   2.79  (1.87 - 3.77)    1.39    2.79
+central | interp          1.96  (1.30 - 2.58)    0.98    1.96
+central | hard-interior   2.90  (1.94 - 3.91)    1.45    2.90
+   hard | interp          2.70  (1.80 - 3.61)    1.35    2.70
+   hard | hard-interior   3.91  (2.68 - 5.49)    1.95    3.91
+
+hard cap from applied deterministic limits: <= 914 s per instance -> 22.9 CPU-h = 11.4 h wall @2 workers (never approached in the pilot: max instance 170 s)
+
+for comparison (same method, v1 full design with measured pilot cost 50.8 s/instance): 405 instances = 5.7 CPU-h = 2.9 h wall @2 workers

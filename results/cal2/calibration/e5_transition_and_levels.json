@@ -1,0 +1,60 @@
+{
+  "transition": {
+    "determined": true,
+    "shares": {
+      "0.4": 0.47058823529411764,
+      "0.475": 0.6111111111111112,
+      "0.55": 0.7222222222222222,
+      "0.625": 0.7777777777777778,
+      "0.7": 0.0
+    },
+    "adjacent_increases": [
+      [
+        0.4,
+        0.475
+      ],
+      [
+        0.475,
+        0.55
+      ],
+      [
+        0.55,
+        0.625
+      ]
+    ],
+    "monotone_non_increasing": false,
+    "highest_W_with_conflict": 0.625,
+    "lowest_W_with_zero_share": 0.7,
+    "max_share": 0.7777777777777778
+  },
+  "suggested_levels": {
+    "levels": [
+      0.625,
+      0.4,
+      0.7
+    ],
+    "targets_share": [
+      0.7778,
+      0.3889,
+      0.1944,
+      0.0
+    ],
+    "picks": [
+      0.625,
+      0.4,
+      0.7,
+      0.7
+    ],
+    "n_distinct": 3,
+    "note": "targets coincide on the coarse grid: refine between the neighbouring levels"
+  },
+  "subthreshold": {
+    "captured": true,
+    "lowest_rho": 1.0,
+    "reference_rho": 5.0,
+    "share_positive_lowest": 0.32608695652173914,
+    "share_positive_reference": 0.7391304347826086,
+    "margin": 0.25
+  },
+  "note": "descriptive guidance from a coarse 5-level, 2-seed calibration; not an estimate with uncertainty"
+}

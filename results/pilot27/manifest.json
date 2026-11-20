@@ -1,0 +1,46 @@
+{
+  "design": {
+    "T": 32,
+    "base_kw": "2",
+    "base_seed": 20261115,
+    "cvs": [
+      "0",
+      "0.35",
+      "0.75"
+    ],
+    "delta_t_min": 15,
+    "gammas": [
+      "1",
+      "19/14",
+      "7/4"
+    ],
+    "max_attempts": 200,
+    "mean_power_kw": "15",
+    "n_jobs": 8,
+    "n_machines": 3,
+    "name": "full",
+    "normal_inr": "6.60",
+    "proc_noise": [
+      "0.7",
+      "1.3"
+    ],
+    "rho_inr": [
+      "5",
+      "14",
+      "50"
+    ],
+    "seeds_per_cell": 1,
+    "shift_start_hour": 16,
+    "solver_det_time_limit": 60.0,
+    "solver_time_limit_s": 180.0,
+    "tiebreak_det_time_limit": 15.0,
+    "tiebreak_time_limit_s": 60.0,
+    "workloads": [
+      "0.40",
+      "0.70",
+      "0.90"
+    ]
+  },
+  "design_digest": "37af47cf7472c2c4",
+  "design_version": "SPEC-002/v1"
+}

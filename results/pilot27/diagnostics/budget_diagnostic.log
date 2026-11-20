@@ -1,0 +1,9 @@
+{'instance_id': 'g0w0c1s000', 'rho_paise': 5000, 'pilot_reason': 'stage1', 'status': 'FEASIBLE', 'stage_statuses': 'FEASIBLE', 'stage_values': '12653076000', 'stage_times_s': '145.4', 'wall_s': 145.4}
+{'instance_id': 'g1w0c1s000', 'rho_paise': 1400, 'pilot_reason': 'stage1', 'status': 'FEASIBLE', 'stage_statuses': 'OPTIMAL|FEASIBLE', 'stage_values': '6631296000|32', 'stage_times_s': '54.5|51.3', 'wall_s': 105.9}
+{'instance_id': 'g1w0c1s000', 'rho_paise': 5000, 'pilot_reason': 'stage1', 'status': 'FEASIBLE', 'stage_statuses': 'FEASIBLE', 'stage_values': '12154416000', 'stage_times_s': '152.2', 'wall_s': 152.2}
+{'instance_id': 'g1w1c1s000', 'rho_paise': 5000, 'pilot_reason': 'stage1', 'status': 'FEASIBLE', 'stage_statuses': 'OPTIMAL|FEASIBLE', 'stage_values': '23327802000|32', 'stage_times_s': '82.5|52.9', 'wall_s': 135.5}
+{'instance_id': 'g2w0c1s000', 'rho_paise': 5000, 'pilot_reason': 'stage1', 'status': 'FEASIBLE', 'stage_statuses': 'OPTIMAL|FEASIBLE', 'stage_values': '12678942000|32', 'stage_times_s': '160.7|54.7', 'wall_s': 215.4}
+{'instance_id': 'g2w1c1s000', 'rho_paise': 5000, 'pilot_reason': 'stage1', 'status': 'FEASIBLE', 'stage_statuses': 'FEASIBLE', 'stage_values': '24133938000', 'stage_times_s': '180.0', 'wall_s': 180.0}
+{'instance_id': 'g0w1c1s000', 'rho_paise': 1400, 'pilot_reason': 'tiebreak', 'status': 'OPTIMAL', 'stage_statuses': 'OPTIMAL|OPTIMAL', 'stage_values': '13682274000|30', 'stage_times_s': '20.6|27.5', 'wall_s': 48.1}
+{'instance_id': 'g1w0c0s000', 'rho_paise': 1400, 'pilot_reason': 'tiebreak', 'status': 'FEASIBLE', 'stage_statuses': 'OPTIMAL|FEASIBLE', 'stage_values': '9105600000|32', 'stage_times_s': '0.6|57.0', 'wall_s': 57.6}
+{'instance_id': 'g2w1c0s000', 'rho_paise': 5000, 'pilot_reason': 'tiebreak', 'status': 'FEASIBLE', 'stage_statuses': 'OPTIMAL|FEASIBLE', 'stage_values': '24604800000|32', 'stage_times_s': '0.3|52.0', 'wall_s': 52.3}

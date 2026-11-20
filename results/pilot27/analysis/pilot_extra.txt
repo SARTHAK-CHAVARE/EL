@@ -1,0 +1,40 @@
+## instances with any positive saving (saving_valid rows, saving_pct>0), by instance and rho
+instance_id gamma w_target   cv  rho_inr  saving_pct  peak_w_B  peak_w_C  peak_reduction_pct  energy_increase_pct  makespan_penalty_pct  full_valid
+ g0w0c0s000     1     0.40    0     5.00        5.64  47000.00  32000.00               31.91                 0.00                 33.33        True
+ g1w0c0s000 19/14     0.40    0     5.00        1.80  47000.00  32000.00               31.91                 5.16                  0.00        True
+ g2w0c0s000   7/4     0.40    0     5.00        0.07  47000.00  32000.00               31.91                 8.15                  0.00        True
+ g2w0c1s000   7/4     0.40 0.35     5.00        8.31  47000.00  25570.00               45.60                 2.44                  0.00        True
+ g0w0c0s000     1     0.40    0    14.00       11.98  47000.00  32000.00               31.91                 0.00                 33.33        True
+ g1w0c0s000 19/14     0.40    0    14.00        9.40  47000.00  32000.00                 NaN                  NaN                   NaN       False
+ g2w0c0s000   7/4     0.40    0    14.00        8.65  47000.00  32000.00                 NaN                  NaN                   NaN       False
+ g2w0c1s000   7/4     0.40 0.35    14.00       19.02  47000.00  25570.00               45.60                 2.44                  0.00        True
+ g0w0c0s000     1     0.40    0    50.00       21.77  47000.00  32000.00               31.91                 0.00                 33.33        True
+ g1w0c0s000 19/14     0.40    0    50.00       20.72  47000.00  32000.00               31.91                 5.16                  0.00        True
+ g2w0c0s000   7/4     0.40    0    50.00       20.72  47000.00  32000.00               31.91                 8.15                  0.00        True
+
+## rho*_ub per instance with a possible peak reduction
+instance_id gamma w_target   cv  rho_star_ub_B  rho_star_ub_Bminpeak
+ g0w0c0s000     1     0.40    0           0.00                  0.00
+ g1w0c0s000 19/14     0.40    0           3.50                  3.50
+ g2w0c0s000   7/4     0.40    0           4.95                  4.95
+ g2w0c1s000   7/4     0.40 0.35           0.93                  0.93
+
+## states by W
+state_B   no_peak_reduction_possible  ok
+w_target                                
+0.40                               5   4
+0.70                               9   0
+0.90                               9   0
+
+## per-instance CPU seconds: mean 50.8 median 24.2 sd 53.1 max 170.5
+bootstrap 95% CI of mean: 32.4 - 70.9
+405 instances at pilot limits (det 60 / 15): 5.7 core-h -> 2.9 h wall on 2 workers
+405 instances at lower CI: 3.6 core-h -> 1.8 h wall on 2 workers
+405 instances at upper CI: 8.0 core-h -> 4.0 h wall on 2 workers
+
+scenario det limits 180/60: +46 s/instance (assumes +100 s per stage-1-unproven C row, +40 s per tie-break-unproven C row; extrapolation)
+405 instances: 10.9 core-h -> 5.4 h wall on 2 workers
+
+unproven C rows: stage1-unproven 6  tie-break-unproven 16  of 81
+
+## single-solve wall maxima: 67.8324  (the 180 s wall limit never binds)

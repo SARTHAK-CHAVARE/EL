@@ -1,0 +1,29 @@
+[runner] design=full digest=37af47cf7472c2c4 tasks=27 already_done=0 to_run=27 workers=2
+[runner] 1/27 g0w0c0s000
+[runner] 2/27 g0w0c2s000
+[runner] 3/27 g0w1c0s000
+[runner] 4/27 g0w0c1s000
+[runner] 5/27 g0w1c1s000
+[runner] 6/27 g0w2c0s000
+[runner] 7/27 g0w2c1s000
+[runner] 8/27 g0w2c2s000
+[runner] 9/27 g0w1c2s000
+[runner] 10/27 g1w0c0s000
+[runner] 11/27 g1w0c2s000
+[runner] 12/27 g1w1c0s000
+[runner] 13/27 g1w0c1s000
+[runner] 14/27 g1w1c2s000
+[runner] 15/27 g1w1c1s000
+[runner] 16/27 g1w2c0s000
+[runner] 17/27 g1w2c1s000
+[runner] 18/27 g1w2c2s000
+[runner] 19/27 g2w0c0s000
+[runner] 20/27 g2w0c2s000
+[runner] 21/27 g2w1c0s000
+[runner] 22/27 g2w0c1s000
+[runner] 23/27 g2w1c2s000
+[runner] 24/27 g2w2c0s000
+[runner] 25/27 g2w2c1s000
+[runner] 26/27 g2w2c2s000
+[runner] 27/27 g2w1c1s000
+done: {'total': 27, 'skipped': 0, 'ran': 27}  ->  results/pilot27/results.csv

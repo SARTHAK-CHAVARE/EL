@@ -1,0 +1,7 @@
+# EL - Tariff Opti, Phase 3. Exact pins of the environment that produced results/pilot27 and results/cal2.
+# Python 3.13 (tested with 3.13.18). Full transitive lock: requirements-lock.txt
+ortools==9.15.6755
+pandas==3.1.1
+numpy==2.5.4
+matplotlib==3.11.2
+pytest==9.2.0

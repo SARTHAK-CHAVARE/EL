@@ -1,0 +1,5 @@
+flag,n_rows,n_valid,n_missing,n_unproven
+saving_valid,450,432,0,18
+full_valid,450,383,0,67
+band_valid_Bmin,450,432,0,18
+band_valid_Bmax,450,359,0,91

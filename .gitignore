@@ -56,3 +56,14 @@ Desktop.ini
 $RECYCLE.BIN/
 .DS_Store
 
+
+# --- Phase 3 (EL Tariff Opti) -------------------------------------------------------------
+# Raw experiment data MUST be versioned: re-include per-instance part files, which the generic
+# packaging rule "parts/" above would otherwise exclude.
+!results/**/parts/
+!results/**/parts/*.csv
+# Local virtual environments and scratch output
+venv-*/
+.venv-*/
+*.tmp
+/tmp/

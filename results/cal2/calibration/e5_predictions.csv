@@ -1,0 +1,4 @@
+prediction,status,observed
+(a) conflict share decreases with W,held_non_monotone,"shares by W {'0.4': 0.47058823529411764, '0.475': 0.6111111111111112, '0.55': 0.7222222222222222, '0.625': 0.7777777777777778, '0.7': 0.0}; adjacent increases [(0.4, 0.475), (0.475, 0.55), (0.55, 0.625)]"
+(b) conflict share among CV>0 <= 0.1,not_held,22 conflict of 55 determined CV>0 instances (share 0.400)
+(c) share with saving at lowest rho >= 0.25 below share at rho=5,held,"{""captured"": true, ""lowest_rho"": 1.0, ""reference_rho"": 5.0, ""share_positive_lowest"": 0.32608695652173914, ""share_positive_reference"": 0.7391304347826086, ""margin"": 0.25}"
