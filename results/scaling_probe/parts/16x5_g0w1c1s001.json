@@ -1,0 +1,215 @@
+{
+ "size": "16x5",
+ "n_jobs": 16,
+ "n_machines": 5,
+ "instance_id": "g0w1c1s001",
+ "w_target": "0.625",
+ "w_real": 0.63125,
+ "cv": "0.35",
+ "gamma": "19/14",
+ "seed_idx": 1,
+ "attempts": 1,
+ "structural_peak_lb_w": 54575,
+ "max_peak_w": 77000,
+ "A": {
+  "status": "OPTIMAL",
+  "stage_statuses": [
+   "OPTIMAL",
+   "OPTIMAL"
+  ],
+  "proven_stages": 2,
+  "n_stages": 2,
+  "time_s": 11.667154200000141,
+  "ec_int": 17670271800,
+  "peak_w": 77000,
+  "makespan": 22,
+  "tec_int": 17670271800
+ },
+ "B": {
+  "status": "OPTIMAL",
+  "stage_statuses": [
+   "OPTIMAL",
+   "OPTIMAL"
+  ],
+  "proven_stages": 2,
+  "n_stages": 2,
+  "time_s": 7.503061828000227,
+  "ec_int": 14250784200,
+  "peak_w": 77000,
+  "makespan": 32,
+  "tec_int": 14250784200
+ },
+ "B_minpeak": {
+  "status": "FEASIBLE",
+  "stage_statuses": [
+   "OPTIMAL",
+   "OPTIMAL",
+   "FEASIBLE"
+  ],
+  "proven_stages": 2,
+  "n_stages": 3,
+  "time_s": 22.306200482999884,
+  "ec_int": 14250784200,
+  "peak_w": 77000,
+  "makespan": 32,
+  "tec_int": 14250784200
+ },
+ "C14": {
+  "status": "FEASIBLE",
+  "stage_statuses": [
+   "FEASIBLE"
+  ],
+  "proven_stages": 0,
+  "n_stages": 2,
+  "time_s": 55.96013622800001,
+  "ec_int": 14566656600,
+  "peak_w": 54575,
+  "makespan": 32,
+  "tec_int": 19150956600
+ },
+ "front": {
+  "complete": false,
+  "termination": "structural_bound",
+  "reason": "cap 54574 W below the structural peak bound 54575 W",
+  "n_points": 5,
+  "n_solves": 6,
+  "time_s": 268.7274407929999,
+  "solves": [
+   {
+    "label": "top",
+    "cap_w": null,
+    "status": "FEASIBLE",
+    "stage_statuses": [
+     "OPTIMAL",
+     "FEASIBLE"
+    ],
+    "time_s": 19.54984418999993,
+    "required_proven": true
+   },
+   {
+    "label": "P",
+    "cap_w": null,
+    "status": "FEASIBLE",
+    "stage_statuses": [
+     "FEASIBLE"
+    ],
+    "time_s": 45.605872722000186,
+    "required_proven": false
+   },
+   {
+    "label": "cap",
+    "cap_w": 76999,
+    "status": "FEASIBLE",
+    "stage_statuses": [
+     "FEASIBLE"
+    ],
+    "time_s": 55.766065248999894,
+    "required_proven": false
+   },
+   {
+    "label": "cap",
+    "cap_w": 69424,
+    "status": "FEASIBLE",
+    "stage_statuses": [
+     "FEASIBLE"
+    ],
+    "time_s": 51.839791216999856,
+    "required_proven": false
+   },
+   {
+    "label": "cap",
+    "cap_w": 61999,
+    "status": "FEASIBLE",
+    "stage_statuses": [
+     "OPTIMAL",
+     "FEASIBLE"
+    ],
+    "time_s": 36.81272793099993,
+    "required_proven": true
+   },
+   {
+    "label": "cap",
+    "cap_w": 58287,
+    "status": "OPTIMAL",
+    "stage_statuses": [
+     "OPTIMAL",
+     "OPTIMAL",
+     "OPTIMAL"
+    ],
+    "time_s": 59.15313948400012,
+    "required_proven": true
+   }
+  ],
+  "points": [
+   {
+    "peak_w": 77000,
+    "ec_int": 14250784200,
+    "makespan": 32,
+    "ec_proven": true
+   },
+   {
+    "peak_w": 69425,
+    "ec_int": 14421867600,
+    "makespan": 32,
+    "ec_proven": false
+   },
+   {
+    "peak_w": 62000,
+    "ec_int": 14466739200,
+    "makespan": 32,
+    "ec_proven": false
+   },
+   {
+    "peak_w": 58288,
+    "ec_int": 14483215200,
+    "makespan": 32,
+    "ec_proven": true
+   },
+   {
+    "peak_w": 54575,
+    "ec_int": 14544701700,
+    "makespan": 32,
+    "ec_proven": true
+   }
+  ]
+ },
+ "break_even_B": {
+  "rho_inr": "77477/37424",
+  "kind": "upper_bound"
+ },
+ "c14_check": {
+  "front_tec": 19129001700,
+  "direct_tec": 19150956600,
+  "comparable": false,
+  "equal": false,
+  "front_better": true
+ },
+ "rules": {
+  "fcfs_ok": true,
+  "eg_ok": true
+ },
+ "guard": {
+  "14": {
+   "choice": "front[peak=54575W]",
+   "tec_int": 19129001700,
+   "lb": 19129001700,
+   "gap_pct": 0.0,
+   "proven": false,
+   "candidate_tec": {
+    "front[peak=77000W]": 20718784200,
+    "front[peak=69425W]": 20253567600,
+    "front[peak=62000W]": 19674739200,
+    "front[peak=58288W]": 19379407200,
+    "front[peak=54575W]": 19129001700,
+    "B": 20718784200,
+    "B_minpeak": 20718784200,
+    "C14": 19150956600,
+    "FCFS": 25889737800,
+    "EG": 21650508000,
+    "PCG": 20275341000
+   }
+  }
+ },
+ "total_solver_time_s": 366.1639935320002,
+ "wall_s": 366.993806598
+}

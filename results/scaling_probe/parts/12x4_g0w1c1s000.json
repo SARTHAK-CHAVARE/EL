@@ -1,0 +1,180 @@
+{
+ "size": "12x4",
+ "n_jobs": 12,
+ "n_machines": 4,
+ "instance_id": "g0w1c1s000",
+ "w_target": "0.625",
+ "w_real": 0.617188,
+ "cv": "0.35",
+ "gamma": "19/14",
+ "seed_idx": 0,
+ "attempts": 1,
+ "structural_peak_lb_w": 39956,
+ "max_peak_w": 62000,
+ "A": {
+  "status": "OPTIMAL",
+  "stage_statuses": [
+   "OPTIMAL",
+   "OPTIMAL"
+  ],
+  "proven_stages": 2,
+  "n_stages": 2,
+  "time_s": 15.067795477999994,
+  "ec_int": 13242859200,
+  "peak_w": 62000,
+  "makespan": 22,
+  "tec_int": 13242859200
+ },
+ "B": {
+  "status": "OPTIMAL",
+  "stage_statuses": [
+   "OPTIMAL",
+   "OPTIMAL"
+  ],
+  "proven_stages": 2,
+  "n_stages": 2,
+  "time_s": 20.05231093099985,
+  "ec_int": 10797393600,
+  "peak_w": 62000,
+  "makespan": 32,
+  "tec_int": 10797393600
+ },
+ "B_minpeak": {
+  "status": "OPTIMAL",
+  "stage_statuses": [
+   "OPTIMAL",
+   "OPTIMAL",
+   "OPTIMAL"
+  ],
+  "proven_stages": 3,
+  "n_stages": 3,
+  "time_s": 22.41440086299997,
+  "ec_int": 10797393600,
+  "peak_w": 62000,
+  "makespan": 32,
+  "tec_int": 10797393600
+ },
+ "C14": {
+  "status": "FEASIBLE",
+  "stage_statuses": [
+   "FEASIBLE"
+  ],
+  "proven_stages": 0,
+  "n_stages": 2,
+  "time_s": 64.59448277799993,
+  "ec_int": 11342062800,
+  "peak_w": 39956,
+  "makespan": 32,
+  "tec_int": 14698366800
+ },
+ "front": {
+  "complete": false,
+  "termination": "structural_bound",
+  "reason": "cap 39955 W below the structural peak bound 39956 W",
+  "n_points": 3,
+  "n_solves": 4,
+  "time_s": 190.0600948560001,
+  "solves": [
+   {
+    "label": "top",
+    "cap_w": null,
+    "status": "OPTIMAL",
+    "stage_statuses": [
+     "OPTIMAL",
+     "OPTIMAL",
+     "OPTIMAL"
+    ],
+    "time_s": 23.69382515199993,
+    "required_proven": true
+   },
+   {
+    "label": "P",
+    "cap_w": null,
+    "status": "FEASIBLE",
+    "stage_statuses": [
+     "OPTIMAL",
+     "FEASIBLE"
+    ],
+    "time_s": 40.11510776199998,
+    "required_proven": true
+   },
+   {
+    "label": "cap",
+    "cap_w": 61999,
+    "status": "FEASIBLE",
+    "stage_statuses": [
+     "FEASIBLE"
+    ],
+    "time_s": 62.32885220600008,
+    "required_proven": false
+   },
+   {
+    "label": "cap",
+    "cap_w": 44651,
+    "status": "FEASIBLE",
+    "stage_statuses": [
+     "FEASIBLE"
+    ],
+    "time_s": 63.9223097360001,
+    "required_proven": false
+   }
+  ],
+  "points": [
+   {
+    "peak_w": 62000,
+    "ec_int": 10797393600,
+    "makespan": 32,
+    "ec_proven": true
+   },
+   {
+    "peak_w": 44652,
+    "ec_int": 11005569600,
+    "makespan": 32,
+    "ec_proven": false
+   },
+   {
+    "peak_w": 39956,
+    "ec_int": 11342062800,
+    "makespan": 32,
+    "ec_proven": false
+   }
+  ]
+ },
+ "break_even_B": {
+  "rho_inr": "2",
+  "kind": "upper_bound"
+ },
+ "c14_check": {
+  "front_tec": 14698366800,
+  "direct_tec": 14698366800,
+  "comparable": false,
+  "equal": true,
+  "front_better": false
+ },
+ "rules": {
+  "fcfs_ok": true,
+  "eg_ok": true
+ },
+ "guard": {
+  "14": {
+   "choice": "front[peak=39956W]",
+   "tec_int": 14698366800,
+   "lb": 14298578400,
+   "gap_pct": 2.7199511717179354,
+   "proven": false,
+   "candidate_tec": {
+    "front[peak=62000W]": 16005393600,
+    "front[peak=44652W]": 14756337600,
+    "front[peak=39956W]": 14698366800,
+    "B": 16005393600,
+    "B_minpeak": 16005393600,
+    "C14": 14698366800,
+    "FCFS": 20736091200,
+    "EG": 17989352400,
+    "PCG": 17989352400
+   }
+  }
+ },
+ "total_solver_time_s": 312.18908490599983,
+ "wall_s": 312.62828644499996
+}

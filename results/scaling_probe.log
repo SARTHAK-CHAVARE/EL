@@ -1,0 +1,282 @@
+[probe] 1/32 8x3_g0w0c0s000.json
+[probe] 2/32 8x3_g0w0c0s001.json
+[probe] 3/32 8x3_g0w0c1s000.json
+[probe] 4/32 8x3_g0w0c1s001.json
+[probe] 5/32 8x3_g0w1c0s000.json
+[probe] 6/32 8x3_g0w1c0s001.json
+[probe] 7/32 8x3_g0w1c1s000.json
+[probe] 8/32 8x3_g0w1c1s001.json
+[probe] 9/32 12x4_g0w0c0s000.json
+[probe] 10/32 12x4_g0w0c0s001.json
+[probe] 11/32 12x4_g0w0c1s000.json
+[probe] 12/32 12x4_g0w0c1s001.json
+[probe] 13/32 12x4_g0w1c0s000.json
+[probe] 14/32 12x4_g0w1c0s001.json
+[probe] 15/32 12x4_g0w1c1s000.json
+[probe] 16/32 12x4_g0w1c1s001.json
+[probe] 17/32 16x5_g0w0c0s000.json
+[probe] 18/32 16x5_g0w0c0s001.json
+[probe] 19/32 16x5_g0w0c1s000.json
+[probe] 20/32 16x5_g0w0c1s001.json
+[probe] 21/32 16x5_g0w1c0s000.json
+[probe] 22/32 16x5_g0w1c0s001.json
+[probe] 23/32 16x5_g0w1c1s000.json
+[probe] 24/32 16x5_g0w1c1s001.json
+[probe] 25/32 20x6_g0w0c0s000.json
+[probe] 26/32 20x6_g0w0c0s001.json
+[probe] 27/32 20x6_g0w0c1s000.json
+[probe] 28/32 20x6_g0w0c1s001.json
+[probe] 29/32 20x6_g0w1c0s000.json
+[probe] 30/32 20x6_g0w1c0s001.json
+[probe] 31/32 20x6_g0w1c1s000.json
+[probe] 32/32 20x6_g0w1c1s001.json
+{
+ "sizes": {
+  "8x3": {
+   "instances": 8,
+   "required_front_solves": 22,
+   "required_proven_share": 1.0,
+   "complete_fronts": 8,
+   "terminations": {
+    "P_bound": 1,
+    "structural_bound": 7
+   },
+   "front_points": {
+    "1": 1,
+    "2": 7
+   },
+   "strategy_proven": {
+    "A": 8,
+    "B": 8,
+    "B_minpeak": 8,
+    "C14": 4
+   },
+   "strategy_stage1_proven": {
+    "A": 8,
+    "B": 8,
+    "B_minpeak": 8,
+    "C14": 7
+   },
+   "c14_comparable": 7,
+   "c14_equal": 7,
+   "c14_front_better_where_direct_unproven": 0,
+   "conflict": 7,
+   "break_even_kinds": {
+    "exact": 7,
+    "upper_bound": 0,
+    "no_peak_reduction": 1,
+    "undetermined": 0
+   },
+   "guard14_proven": 8,
+   "guard14_choice": {
+    "front": 8,
+    "B": 0,
+    "C14": 0,
+    "EG": 0,
+    "PCG": 0,
+    "FCFS": 0
+   },
+   "guard14_gap_pct_max": 0.0,
+   "fcfs_ok": 8,
+   "eg_ok": 8,
+   "solver_time_s": {
+    "median": 22.999302982000017,
+    "max": 109.4444979459999,
+    "sum": 268.9926510519995
+   },
+   "front_time_s": {
+    "median": 2.83002392399996,
+    "max": 19.370404543999996
+   },
+   "gate2_pass": true
+  },
+  "12x4": {
+   "instances": 8,
+   "required_front_solves": 30,
+   "required_proven_share": 0.9333333333333333,
+   "complete_fronts": 7,
+   "terminations": {
+    "structural_bound": 8
+   },
+   "front_points": {
+    "2": 3,
+    "3": 4,
+    "4": 1
+   },
+   "strategy_proven": {
+    "A": 8,
+    "B": 8,
+    "B_minpeak": 7,
+    "C14": 2
+   },
+   "strategy_stage1_proven": {
+    "A": 8,
+    "B": 8,
+    "B_minpeak": 8,
+    "C14": 6
+   },
+   "c14_comparable": 6,
+   "c14_equal": 6,
+   "c14_front_better_where_direct_unproven": 0,
+   "conflict": 7,
+   "break_even_kinds": {
+    "exact": 7,
+    "upper_bound": 1,
+    "no_peak_reduction": 0,
+    "undetermined": 0
+   },
+   "guard14_proven": 7,
+   "guard14_choice": {
+    "front": 8,
+    "B": 0,
+    "C14": 0,
+    "EG": 0,
+    "PCG": 0,
+    "FCFS": 0
+   },
+   "guard14_gap_pct_max": 2.7199511717179354,
+   "fcfs_ok": 8,
+   "eg_ok": 8,
+   "solver_time_s": {
+    "median": 45.758966894499935,
+    "max": 312.18908490599983,
+    "sum": 667.9188860039994
+   },
+   "front_time_s": {
+    "median": 13.000620357999907,
+    "max": 190.0600948560001
+   },
+   "gate2_pass": true
+  },
+  "16x5": {
+   "instances": 8,
+   "required_front_solves": 33,
+   "required_proven_share": 0.7878787878787878,
+   "complete_fronts": 6,
+   "terminations": {
+    "structural_bound": 7,
+    "unproven": 1
+   },
+   "front_points": {
+    "2": 3,
+    "3": 3,
+    "4": 1,
+    "5": 1
+   },
+   "strategy_proven": {
+    "A": 8,
+    "B": 8,
+    "B_minpeak": 5,
+    "C14": 1
+   },
+   "strategy_stage1_proven": {
+    "A": 8,
+    "B": 8,
+    "B_minpeak": 8,
+    "C14": 4
+   },
+   "c14_comparable": 4,
+   "c14_equal": 4,
+   "c14_front_better_where_direct_unproven": 3,
+   "conflict": 6,
+   "break_even_kinds": {
+    "exact": 6,
+    "upper_bound": 2,
+    "no_peak_reduction": 0,
+    "undetermined": 0
+   },
+   "guard14_proven": 6,
+   "guard14_choice": {
+    "front": 8,
+    "B": 0,
+    "C14": 0,
+    "EG": 0,
+    "PCG": 0,
+    "FCFS": 0
+   },
+   "guard14_gap_pct_max": 5.380176949569778,
+   "fcfs_ok": 8,
+   "eg_ok": 8,
+   "solver_time_s": {
+    "median": 127.76584012149993,
+    "max": 386.55367804699995,
+    "sum": 1401.568027212
+   },
+   "front_time_s": {
+    "median": 71.4377742129999,
+    "max": 268.7274407929999
+   },
+   "gate2_pass": false
+  },
+  "20x6": {
+   "instances": 8,
+   "required_front_solves": 45,
+   "required_proven_share": 0.6,
+   "complete_fronts": 4,
+   "terminations": {
+    "structural_bound": 6,
+    "unproven": 2
+   },
+   "front_points": {
+    "3": 2,
+    "4": 2,
+    "5": 3,
+    "6": 1
+   },
+   "strategy_proven": {
+    "A": 8,
+    "B": 8,
+    "B_minpeak": 5,
+    "C14": 4
+   },
+   "strategy_stage1_proven": {
+    "A": 8,
+    "B": 8,
+    "B_minpeak": 8,
+    "C14": 5
+   },
+   "c14_comparable": 4,
+   "c14_equal": 4,
+   "c14_front_better_where_direct_unproven": 1,
+   "conflict": 4,
+   "break_even_kinds": {
+    "exact": 4,
+    "upper_bound": 4,
+    "no_peak_reduction": 0,
+    "undetermined": 0
+   },
+   "guard14_proven": 4,
+   "guard14_choice": {
+    "front": 6,
+    "B": 0,
+    "C14": 2,
+    "EG": 0,
+    "PCG": 0,
+    "FCFS": 0
+   },
+   "guard14_gap_pct_max": 3.5557774804624165,
+   "fcfs_ok": 8,
+   "eg_ok": 8,
+   "solver_time_s": {
+    "median": 196.06539409400023,
+    "max": 554.4991895559981,
+    "sum": 2091.7897415079988
+   },
+   "front_time_s": {
+    "median": 131.3680958750001,
+    "max": 412.6250086999985
+   },
+   "gate2_pass": false
+  }
+ },
+ "gate_share": 0.9,
+ "m2": "12x4",
+ "m2_block_estimate": {
+  "size": "12x4",
+  "instances": 60,
+  "cpu_h": 1.391497679174999,
+  "wall_h_2_workers": 0.6957488395874994,
+  "basis": "mean probe solver time per instance at that size (gamma 19/14, W 0.40/0.625)"
+ },
+ "note": "Probe instances: gamma 19/14, W {0.40, 0.625}, CV {0, 0.35}, 2 seeds; descriptive only."
+}
