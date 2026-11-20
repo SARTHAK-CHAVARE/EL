@@ -1,0 +1,96 @@
+{
+  "instances": 90,
+  "same_instance": {
+    "n": 90,
+    "true": 90
+  },
+  "complete": {
+    "n": 90,
+    "true": 88
+  },
+  "termination": {
+    "P_bound": 85,
+    "infeasible_cap": 3,
+    "unproven": 2
+  },
+  "n_points": {
+    "1": 52,
+    "2": 28,
+    "3": 8,
+    "4": 2
+  },
+  "n_dominated_total": 0,
+  "top_ec_eq_B": {
+    "n": 90,
+    "true": 90
+  },
+  "top_peak_le_B": {
+    "n": 90,
+    "true": 90
+  },
+  "bottom_eq_P": {
+    "n": 85,
+    "true": 85
+  },
+  "tec_match": {
+    "n": 423,
+    "true": 423
+  },
+  "makespan_match": {
+    "n": 374,
+    "true": 374
+  },
+  "sign_consistent": {
+    "n": 423,
+    "true": 423
+  },
+  "be_B_kind": {
+    "exact": 47,
+    "no_peak_reduction": 41,
+    "undetermined": 2
+  },
+  "be_B_le_ub": {
+    "n": 46,
+    "true": 46
+  },
+  "be_B_eq_ub": {
+    "n": 46,
+    "true": 43
+  },
+  "be_Bmin_le_ub": {
+    "n": 45,
+    "true": 45
+  },
+  "be_Bmin_eq_ub": {
+    "n": 45,
+    "true": 43
+  },
+  "theorem_instances": 18,
+  "unproven_direct_rows": 18,
+  "unproven_direct_rows_improved_by_front": 0,
+  "front_time_s": {
+    "total": 1156.840453387003,
+    "median": 3.8798689095002032,
+    "max": 115.13237023300007
+  },
+  "direct_c5_time_s": {
+    "total": 3227.0431,
+    "median": 20.83825
+  },
+  "direct_c5_plus_p_time_s": 3861.0846000000006,
+  "median_ratio_front_over_c5": 0.26343974965530026,
+  "abandon_check": {
+    "cap_solves_on_instances_with_all_direct_C_proven": 42,
+    "unproven": 2,
+    "share": 0.047619047619047616
+  },
+  "problems": [],
+  "gate1": {
+    "zero_tec_mismatch": true,
+    "zero_makespan_mismatch": true,
+    "no_problems": true,
+    "median_front_time_le_direct": true,
+    "abandon_triggered": false,
+    "proceed": true
+  }
+}

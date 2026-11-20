@@ -1,0 +1,110 @@
+{
+ "instance_id": "g0w3c1s000",
+ "w_real": 0.625,
+ "attempts": 1,
+ "complete": true,
+ "termination": "P_bound",
+ "reason": "cap 31999 W below the proven minimum peak 32000 W",
+ "n_solves": 2,
+ "wall_time_s": 4.474598616000094,
+ "solve_time_s": 4.385628332999886,
+ "lb_valid": true,
+ "n_dominated": 0,
+ "solves": [
+  {
+   "label": "top",
+   "cap_w": null,
+   "status": "OPTIMAL",
+   "stage_statuses": [
+    "OPTIMAL",
+    "OPTIMAL",
+    "OPTIMAL"
+   ],
+   "time_s": 1.663994139000124
+  },
+  {
+   "label": "P",
+   "cap_w": null,
+   "status": "OPTIMAL",
+   "stage_statuses": [
+    "OPTIMAL",
+    "OPTIMAL",
+    "OPTIMAL"
+   ],
+   "time_s": 2.721634193999762
+  }
+ ],
+ "points": [
+  {
+   "peak_w": 32000,
+   "ec_int": 8334018000,
+   "makespan": 32,
+   "ec_proven": true,
+   "peak_proven": true,
+   "makespan_proven": true,
+   "source": "top",
+   "cap_w": null,
+   "rho_interval": [
+    "0",
+    null
+   ]
+  }
+ ],
+ "be_B": {
+  "rho_inr": null,
+  "kind": "no_peak_reduction",
+  "via_peak_w": null
+ },
+ "be_B_minpeak": {
+  "rho_inr": null,
+  "kind": "no_peak_reduction",
+  "via_peak_w": null
+ },
+ "rho_rows": [
+  {
+   "rho_paise": 100,
+   "peak_w": 32000,
+   "ec_int": 8334018000,
+   "makespan": 32,
+   "makespan_proven": true,
+   "tec_int": 8526018000,
+   "tec_lb": 8526018000
+  },
+  {
+   "rho_paise": 200,
+   "peak_w": 32000,
+   "ec_int": 8334018000,
+   "makespan": 32,
+   "makespan_proven": true,
+   "tec_int": 8718018000,
+   "tec_lb": 8718018000
+  },
+  {
+   "rho_paise": 500,
+   "peak_w": 32000,
+   "ec_int": 8334018000,
+   "makespan": 32,
+   "makespan_proven": true,
+   "tec_int": 9294018000,
+   "tec_lb": 9294018000
+  },
+  {
+   "rho_paise": 1400,
+   "peak_w": 32000,
+   "ec_int": 8334018000,
+   "makespan": 32,
+   "makespan_proven": true,
+   "tec_int": 11022018000,
+   "tec_lb": 11022018000
+  },
+  {
+   "rho_paise": 5000,
+   "peak_w": 32000,
+   "ec_int": 8334018000,
+   "makespan": 32,
+   "makespan_proven": true,
+   "tec_int": 17934018000,
+   "tec_lb": 17934018000
+  }
+ ]
+}

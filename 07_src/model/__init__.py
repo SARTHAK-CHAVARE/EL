@@ -1,5 +1,8 @@
 """Peak-aware energy-cost production scheduling: CP-SAT engine (SPEC-001)."""
 from .evaluate import Metrics, ScheduleError, check_schedule, evaluate_schedule, rho_star_pair
+from .front import (BreakEven, Front, FrontPoint, FrontSolve, Recommendation, best_for_rho, break_even,
+                    ec_peak_front, filter_dominated, recommend, rho_intervals, schedule_hint,
+                    structural_peak_lower_bound, tec_lower_bound)
 from .formulation import InfeasibleInstance, build_formulation, placements
 from .instance import Instance, Job, Operation, make_instance
 from .solver import (InternalConsistencyError, SolveStatus, SolverConfig, Stage, StrategyResult,

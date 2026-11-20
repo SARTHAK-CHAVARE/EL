@@ -1,0 +1,135 @@
+{
+ "instance_id": "g2w2c0s000",
+ "w_real": 0.552083,
+ "attempts": 1,
+ "complete": true,
+ "termination": "structural_bound",
+ "reason": "cap 31999 W below the structural peak bound 32000 W",
+ "n_solves": 3,
+ "wall_time_s": 2.29825624099999,
+ "solve_time_s": 2.1596866979998595,
+ "lb_valid": true,
+ "n_dominated": 0,
+ "solves": [
+  {
+   "label": "top",
+   "cap_w": null,
+   "status": "OPTIMAL",
+   "stage_statuses": [
+    "OPTIMAL",
+    "OPTIMAL",
+    "OPTIMAL"
+   ],
+   "time_s": 0.6503546690000803
+  },
+  {
+   "label": "P",
+   "cap_w": null,
+   "status": "OPTIMAL",
+   "stage_statuses": [
+    "OPTIMAL",
+    "OPTIMAL",
+    "OPTIMAL"
+   ],
+   "time_s": 0.7430431879997741
+  },
+  {
+   "label": "cap",
+   "cap_w": 46999,
+   "status": "OPTIMAL",
+   "stage_statuses": [
+    "OPTIMAL",
+    "OPTIMAL",
+    "OPTIMAL"
+   ],
+   "time_s": 0.766288841000005
+  }
+ ],
+ "points": [
+  {
+   "peak_w": 47000,
+   "ec_int": 7858800000,
+   "makespan": 32,
+   "ec_proven": true,
+   "peak_proven": true,
+   "makespan_proven": true,
+   "source": "top",
+   "cap_w": null,
+   "rho_interval": [
+    "0",
+    "99/10"
+   ]
+  },
+  {
+   "peak_w": 32000,
+   "ec_int": 8749800000,
+   "makespan": 32,
+   "ec_proven": true,
+   "peak_proven": true,
+   "makespan_proven": true,
+   "source": "cap",
+   "cap_w": 46999,
+   "rho_interval": [
+    "99/10",
+    null
+   ]
+  }
+ ],
+ "be_B": {
+  "rho_inr": "99/10",
+  "kind": "exact",
+  "via_peak_w": 32000
+ },
+ "be_B_minpeak": {
+  "rho_inr": "99/10",
+  "kind": "exact",
+  "via_peak_w": 32000
+ },
+ "rho_rows": [
+  {
+   "rho_paise": 100,
+   "peak_w": 47000,
+   "ec_int": 7858800000,
+   "makespan": 32,
+   "makespan_proven": true,
+   "tec_int": 8140800000,
+   "tec_lb": 8140800000
+  },
+  {
+   "rho_paise": 200,
+   "peak_w": 47000,
+   "ec_int": 7858800000,
+   "makespan": 32,
+   "makespan_proven": true,
+   "tec_int": 8422800000,
+   "tec_lb": 8422800000
+  },
+  {
+   "rho_paise": 500,
+   "peak_w": 47000,
+   "ec_int": 7858800000,
+   "makespan": 32,
+   "makespan_proven": true,
+   "tec_int": 9268800000,
+   "tec_lb": 9268800000
+  },
+  {
+   "rho_paise": 1400,
+   "peak_w": 32000,
+   "ec_int": 8749800000,
+   "makespan": 32,
+   "makespan_proven": true,
+   "tec_int": 11437800000,
+   "tec_lb": 11437800000
+  },
+  {
+   "rho_paise": 5000,
+   "peak_w": 32000,
+   "ec_int": 8749800000,
+   "makespan": 32,
+   "makespan_proven": true,
+   "tec_int": 18349800000,
+   "tec_lb": 18349800000
+  }
+ ]
+}

@@ -69,6 +69,11 @@ class StrategyResult:
     stage_times_s: List[float] = field(default_factory=list)
     wall_time_s: float = 0.0
     best_bound_last_stage: Optional[float] = None
+    # CP-SAT best_objective_bound per stage that ran (None for INFEASIBLE / MODEL_INVALID stages). For a minimised
+    # stage it is a valid LOWER bound on that stage's optimum over the feasible set of that stage (including any
+    # extra bounds), whether or not the stage was proven.
+    stage_bounds: List[Optional[float]] = field(default_factory=list)
+    extra_bounds: List[Tuple[str, str, int]] = field(default_factory=list)
     num_workers: int = 1
     random_seed: int = 0
 
@@ -135,17 +140,31 @@ def _params(cfg: SolverConfig, stage_index: int = 0) -> cp_model.CpSolver:
 
 
 def run_lexicographic(inst: Instance, strategy: str, stages: Sequence[Stage], rho_paise: int = 0,
-                      config: Optional[SolverConfig] = None) -> StrategyResult:
-    """Solve ``stages`` in order over the shared feasible set and evaluate the result independently."""
+                      config: Optional[SolverConfig] = None, *,
+                      extra_bounds: Sequence[Tuple[str, str, int]] = (),
+                      initial_hint: Optional[Dict] = None) -> StrategyResult:
+    """Solve ``stages`` in order over the shared feasible set and evaluate the result independently.
+
+    ``extra_bounds``: additional exact integer bounds applied in EVERY stage, in the same form as the lexicographic
+    bounds: ``(expr, "min", v)`` means ``expr <= v`` and ``(expr, "max", v)`` means ``expr >= v``. Used by the
+    epsilon-constraint front (``model.front``) for ``pmax <= cap``. The Model V1.0 formulation itself is unchanged.
+    ``initial_hint``: CP-SAT hint for stage 1 (``x[j,m,t]`` values; missing keys default to 0), e.g. a schedule
+    already known to satisfy ``extra_bounds``. A hint never changes the optimum, only the search.
+    Defaults reproduce the previous behaviour exactly.
+    """
     cfg = config or SolverConfig()
+    for name, sense, _ in extra_bounds:
+        if sense not in ("min", "max"):
+            raise ValueError(f"extra bound sense must be 'min' or 'max', got {sense!r} for {name!r}")
     t_start = time.perf_counter()
     res = StrategyResult(strategy=strategy, status=SolveStatus.UNKNOWN, proven_optimal=False, reason="",
                          rho_paise=rho_paise, schedule=None, metrics=None,
                          num_workers=cfg.num_workers, random_seed=cfg.random_seed,
                          n_stages=len(stages))
     statuses: List[SolveStatus] = []
-    fixed: List[Tuple[str, str, int]] = []
-    hint: Optional[Dict] = None
+    fixed: List[Tuple[str, str, int]] = [(n, s, int(v)) for n, s, v in extra_bounds]
+    res.extra_bounds = list(fixed)
+    hint: Optional[Dict] = dict(initial_hint) if initial_hint is not None else None
     last_x: Optional[Dict] = None
     last_vals: Optional[Dict[str, int]] = None
 
@@ -174,6 +193,8 @@ def run_lexicographic(inst: Instance, strategy: str, stages: Sequence[Stage], rh
         res.stage_exprs.append(f"{st.sense} {st.expr}")
         res.stage_statuses.append(status.value)
         res.stage_times_s.append(dt)
+        res.stage_bounds.append(None if status in (SolveStatus.INFEASIBLE, SolveStatus.MODEL_INVALID)
+                                else float(solver.best_objective_bound))
         if status in (SolveStatus.OPTIMAL, SolveStatus.FEASIBLE):
             xs = {tr: solver.value(v) for tr, v in form.x.items()}
             vals = {n: int(solver.value(e)) for n, e in form.exprs.items()}

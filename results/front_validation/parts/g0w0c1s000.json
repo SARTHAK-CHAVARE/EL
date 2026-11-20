@@ -1,0 +1,99 @@
+{
+ "instance_id": "g0w0c1s000",
+ "w_real": 0.395833,
+ "attempts": 1,
+ "complete": true,
+ "termination": "structural_bound",
+ "reason": "energy-optimal peak 25570 W equals the structural lower bound (no reduction possible)",
+ "n_solves": 1,
+ "wall_time_s": 1.5848349069999585,
+ "solve_time_s": 1.5384584820001237,
+ "lb_valid": true,
+ "n_dominated": 0,
+ "solves": [
+  {
+   "label": "top",
+   "cap_w": null,
+   "status": "OPTIMAL",
+   "stage_statuses": [
+    "OPTIMAL",
+    "OPTIMAL",
+    "OPTIMAL"
+   ],
+   "time_s": 1.5384584820001237
+  }
+ ],
+ "points": [
+  {
+   "peak_w": 25570,
+   "ec_int": 5130576000,
+   "makespan": 32,
+   "ec_proven": true,
+   "peak_proven": true,
+   "makespan_proven": true,
+   "source": "top",
+   "cap_w": null,
+   "rho_interval": [
+    "0",
+    null
+   ]
+  }
+ ],
+ "be_B": {
+  "rho_inr": null,
+  "kind": "no_peak_reduction",
+  "via_peak_w": null
+ },
+ "be_B_minpeak": {
+  "rho_inr": null,
+  "kind": "no_peak_reduction",
+  "via_peak_w": null
+ },
+ "rho_rows": [
+  {
+   "rho_paise": 100,
+   "peak_w": 25570,
+   "ec_int": 5130576000,
+   "makespan": 32,
+   "makespan_proven": true,
+   "tec_int": 5283996000,
+   "tec_lb": 5283996000
+  },
+  {
+   "rho_paise": 200,
+   "peak_w": 25570,
+   "ec_int": 5130576000,
+   "makespan": 32,
+   "makespan_proven": true,
+   "tec_int": 5437416000,
+   "tec_lb": 5437416000
+  },
+  {
+   "rho_paise": 500,
+   "peak_w": 25570,
+   "ec_int": 5130576000,
+   "makespan": 32,
+   "makespan_proven": true,
+   "tec_int": 5897676000,
+   "tec_lb": 5897676000
+  },
+  {
+   "rho_paise": 1400,
+   "peak_w": 25570,
+   "ec_int": 5130576000,
+   "makespan": 32,
+   "makespan_proven": true,
+   "tec_int": 7278456000,
+   "tec_lb": 7278456000
+  },
+  {
+   "rho_paise": 5000,
+   "peak_w": 25570,
+   "ec_int": 5130576000,
+   "makespan": 32,
+   "makespan_proven": true,
+   "tec_int": 12801576000,
+   "tec_lb": 12801576000
+  }
+ ]
+}
