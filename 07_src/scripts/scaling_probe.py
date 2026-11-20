@@ -8,7 +8,17 @@ Design defaults, identical to cal2 (stage 1: 60 det-s / 180 s wall; tie-breaks: 
 
 Per instance it runs the full main-study strategy set, so both proof rates and the cost of an M2 block are measured:
 A, B, B_minpeak, the energy-peak front (top, P, capped solves), direct C at rho = 14 (cross-check of the front at
-larger sizes), FCFS, energy-greedy, peak-capped greedy, and the safety guard at rho = 14 and the KERC-equivalent rho.
+larger sizes), FCFS, energy-greedy, peak-capped greedy, and the safety guard at rho = 14 ONLY. (The guard evaluates
+schedules at integer paise; the KERC-equivalent rho, 350/26 INR/kW, is fractional and is NOT evaluated by this probe.)
+
+Result identity: every part file stores ``digest`` = hash(probe protocol, size design digest, solver config). An
+existing part is reused only if its digest equals the current one; otherwise the run stops (StaleProbeResult) instead
+of reusing it. Parts written before digests existed (commit 5d363fa) are accepted only through the "legacy" entry of
+``manifest.json``, which records the digest of the code that produced them; any later change to the design or budgets
+changes the current digest and those parts are then rejected too.
+
+Completeness: ``aggregate`` enumerates every expected instance of every size. Missing or unreadable parts are listed
+per size; such a size gets gate2_pass = None ("incomplete") and can never be selected as M2.
 
 Gate 2 (approved D2): a size qualifies for a larger machine-count block only if >= 90 % of the REQUIRED front solves
 are proven (top: EC stage; capped solves: EC stage or proven infeasible; P: min-peak stage, when solved). The share of
@@ -17,6 +27,8 @@ complete (exact) fronts is reported beside it. Nothing is dropped: every solve a
 from __future__ import annotations
 
 import argparse
+import dataclasses
+import hashlib
 import json
 import statistics
 import sys
@@ -37,11 +49,46 @@ from model import (SolveStatus, break_even, ec_peak_front, recommend, solve_stra
 ROOT = Path(__file__).resolve().parents[2]
 BASE_SEED = 20261121
 GATE_SHARE = 0.90
+PROTOCOL = "P3/v1"
+
+
+class StaleProbeResult(RuntimeError):
+    pass
 
 
 def probe_design(n: int, m: int) -> Design:
     return Design(name=f"probe-{n}x{m}", gammas=("19/14",), workloads=("0.40", "0.625"), cvs=("0", "0.35"),
                   rho_inr=("14",), seeds_per_cell=2, n_jobs=n, n_machines=m, base_seed=BASE_SEED)
+
+
+def probe_digest(n: int, m: int) -> str:
+    """Identity of a probe size: protocol, the size's design digest and the solver configuration."""
+    d = probe_design(n, m)
+    payload = dict(protocol=PROTOCOL, design_digest=d.digest(), solver=dataclasses.asdict(_solver_config(d)))
+    return hashlib.sha256(json.dumps(payload, sort_keys=True, default=str).encode()).hexdigest()[:16]
+
+
+def _load_manifest(out: Path) -> dict:
+    mf = out / "manifest.json"
+    return json.loads(mf.read_text()) if mf.exists() else {}
+
+
+def part_digest(rec: dict, size: str, manifest: dict):
+    """Digest of a part: its own field, or (pre-digest parts only) the manifest's legacy entry for its size."""
+    if "digest" in rec:
+        return rec["digest"]
+    return manifest.get("legacy", {}).get("digest_by_size", {}).get(size)
+
+
+def _check_existing(path: Path, n: int, m: int, out: Path) -> bool:
+    """True if a valid part for the CURRENT digest exists; raises StaleProbeResult for a stale one."""
+    if not path.exists():
+        return False
+    rec = json.loads(path.read_text())
+    got, want = part_digest(rec, f"{n}x{m}", _load_manifest(out)), probe_digest(n, m)
+    if got != want:
+        raise StaleProbeResult(f"{path.name}: part digest {got} != current {want}; use a new --out directory")
+    return True
 
 
 def _res(r, rho_paise=0):
@@ -55,13 +102,13 @@ def _res(r, rho_paise=0):
 def run_one(args):
     n, m, task, out = args
     path = out / "parts" / f"{n}x{m}_{task.instance_id}.json"
-    if path.exists():
+    if _check_existing(path, n, m, out):
         return path.name
     d = probe_design(n, m)
     cfg = _solver_config(d)
     t0 = time.perf_counter()
     inst, meta = generate_instance(d, task)
-    rec = dict(size=f"{n}x{m}", n_jobs=n, n_machines=m, instance_id=task.instance_id, w_target=meta.w_target,
+    rec = dict(digest=probe_digest(n, m), size=f"{n}x{m}", n_jobs=n, n_machines=m, instance_id=task.instance_id, w_target=meta.w_target,
                w_real=meta.w_real, cv=meta.cv, gamma=meta.gamma, seed_idx=meta.seed_idx, attempts=meta.attempts,
                structural_peak_lb_w=structural_peak_lower_bound(inst), max_peak_w=inst.base_w + sum(meta.machine_power_w))
     a = solve_strategy_a(inst, cfg)
@@ -98,9 +145,7 @@ def run_one(args):
     fc_s, eg = fcfs_schedule(inst), energy_greedy_schedule(inst)
     rec["rules"] = dict(fcfs_ok=fc_s is not None, eg_ok=eg is not None)
     guard = {}
-    for label, rho in (("14", 1400), ("eq26", None)):
-        if rho is None:
-            continue   # the guard evaluates integer paise; rho_eq is assessed from the front in the main analysis
+    for label, rho in (("14", 1400),):            # rho = 14 only (see module docstring)
         cands = {"B": b.schedule, "B_minpeak": bmin.schedule, "C14": c14.schedule if rho == 1400 else None,
                  "FCFS": fc_s, "EG": eg, "PCG": peak_capped_greedy_schedule(inst, rho)}
         if f.points or any(v is not None for v in cands.values()):
@@ -117,12 +162,37 @@ def run_one(args):
     return path.name
 
 
-def aggregate(out: Path) -> dict:
-    recs = [json.loads(p.read_text()) for p in sorted((out / "parts").glob("*.json"))]
-    sizes = sorted({r["size"] for r in recs}, key=lambda s: tuple(int(x) for x in s.split("x")))
+def aggregate(out: Path, sizes=None) -> dict:
+    """Summarise every expected instance of ``sizes`` (default: the sizes recorded in the manifest, else those found).
+
+    Never drops anything silently: missing / unreadable parts are listed per size, a size with any missing part gets
+    gate2_pass = None, and a part whose digest does not match the current probe digest raises StaleProbeResult."""
+    manifest = _load_manifest(out)
+    if sizes is None:
+        sizes = manifest.get("sizes") or sorted({p.name.split("_")[0] for p in (out / "parts").glob("*.json")})
+    sizes = sorted(sizes, key=lambda s: tuple(int(x) for x in s.split("x")))
+    recs, missing = [], {}
+    for s in sizes:
+        n, m = (int(x) for x in s.split("x"))
+        want = probe_digest(n, m)
+        missing[s] = []
+        for t in enumerate_tasks(probe_design(n, m)):
+            p = out / "parts" / f"{s}_{t.instance_id}.json"
+            try:
+                rec = json.loads(p.read_text())
+            except (OSError, ValueError):
+                missing[s].append(t.instance_id)
+                continue
+            got = part_digest(rec, s, manifest)
+            if got != want:
+                raise StaleProbeResult(f"{p.name}: digest {got} != current {want}; refusing to aggregate")
+            recs.append(rec)
     summ = {}
     for s in sizes:
         rs = [r for r in recs if r["size"] == s]
+        if not rs:
+            summ[s] = dict(instances=0, expected=len(missing[s]), missing=missing[s], gate2_pass=None)
+            continue
         req = [x for r in rs for x in r["front"]["solves"]]
         share = sum(x["required_proven"] for x in req) / len(req) if req else 0.0
         checks = [r["c14_check"] for r in rs if "c14_check" in r]
@@ -131,7 +201,7 @@ def aggregate(out: Path) -> dict:
         ft = [r["front"]["time_s"] for r in rs]
         gaps = [r["guard"]["14"]["gap_pct"] for r in rs if "14" in r["guard"] and r["guard"]["14"]["gap_pct"] is not None]
         summ[s] = dict(
-            instances=len(rs), required_front_solves=len(req), required_proven_share=share,
+            instances=len(rs), expected=len(rs) + len(missing[s]), missing=missing[s], required_front_solves=len(req), required_proven_share=share,
             complete_fronts=sum(r["front"]["complete"] for r in rs),
             terminations={k: sum(r["front"]["termination"] == k for r in rs) for k in
                           sorted({r["front"]["termination"] for r in rs})},
@@ -150,11 +220,11 @@ def aggregate(out: Path) -> dict:
             fcfs_ok=sum(r["rules"]["fcfs_ok"] for r in rs), eg_ok=sum(r["rules"]["eg_ok"] for r in rs),
             solver_time_s=dict(median=statistics.median(t), max=max(t), sum=sum(t)),
             front_time_s=dict(median=statistics.median(ft), max=max(ft)),
-            gate2_pass=share >= GATE_SHARE)
+            gate2_pass=(share >= GATE_SHARE) if not missing[s] else None)
     # M2: the largest size above 8x3 that passes, provided every smaller size passes too
     m2 = None
     for s in sizes:
-        if not summ[s]["gate2_pass"]:
+        if summ[s]["gate2_pass"] is not True:          # failed OR incomplete: stop
             break
         if s != "8x3":
             m2 = s
@@ -178,6 +248,12 @@ def main(argv=None) -> int:
     ap.add_argument("--aggregate-only", action="store_true")
     a = ap.parse_args(argv)
     (a.out / "parts").mkdir(parents=True, exist_ok=True)
+    sizes = a.sizes.split(",")
+    mf = a.out / "manifest.json"
+    man = _load_manifest(a.out)
+    man.update(protocol=PROTOCOL, sizes=sizes,
+               digest_by_size={s: probe_digest(*(int(x) for x in s.split("x"))) for s in sizes})
+    mf.write_text(json.dumps(man, indent=2, sort_keys=True))
     if not a.aggregate_only:
         todo = []
         for s in a.sizes.split(","):
@@ -186,7 +262,7 @@ def main(argv=None) -> int:
         with Pool(a.workers) as pool:
             for i, name in enumerate(pool.imap(run_one, todo), 1):
                 print(f"[probe] {i}/{len(todo)} {name}", flush=True)
-    res = aggregate(a.out)
+    res = aggregate(a.out, sizes)
     print(json.dumps(res, indent=1, default=str))
     return 0
 

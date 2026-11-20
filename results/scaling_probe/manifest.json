@@ -1,0 +1,26 @@
+{
+  "digest_by_size": {
+    "12x4": "76762f253b8dbfba",
+    "16x5": "fbdc5ce83226f6b2",
+    "20x6": "d0bdc5ccb731d9c7",
+    "8x3": "782a48257be0a6cf"
+  },
+  "legacy": {
+    "commit": "5d363fa",
+    "digest_by_size": {
+      "12x4": "76762f253b8dbfba",
+      "16x5": "fbdc5ce83226f6b2",
+      "20x6": "d0bdc5ccb731d9c7",
+      "8x3": "782a48257be0a6cf"
+    },
+    "note": "The 32 parts in parts/ were written on 2026-11-20 (16:12-16:50 UTC) by scaling_probe.py as committed in 5d363fa, before parts carried a digest. probe_design(), Design defaults and _solver_config() are unchanged since then; on 2026-11-20 every part was re-checked against a regenerated instance (w_real, attempts, structural peak bound, max peak): 32/32 identical. These digests are therefore the digests of the code that produced them. Any change to the design or budgets changes the current digest and these parts are then rejected.",
+    "verified_parts": 32
+  },
+  "protocol": "P3/v1",
+  "sizes": [
+    "8x3",
+    "12x4",
+    "16x5",
+    "20x6"
+  ]
+}

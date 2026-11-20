@@ -2,6 +2,8 @@
   "sizes": {
     "8x3": {
       "instances": 8,
+      "expected": 8,
+      "missing": [],
       "required_front_solves": 22,
       "required_proven_share": 1.0,
       "complete_fronts": 8,
@@ -60,6 +62,8 @@
     },
     "12x4": {
       "instances": 8,
+      "expected": 8,
+      "missing": [],
       "required_front_solves": 30,
       "required_proven_share": 0.9333333333333333,
       "complete_fronts": 7,
@@ -118,6 +122,8 @@
     },
     "16x5": {
       "instances": 8,
+      "expected": 8,
+      "missing": [],
       "required_front_solves": 33,
       "required_proven_share": 0.7878787878787878,
       "complete_fronts": 6,
@@ -178,6 +184,8 @@
     },
     "20x6": {
       "instances": 8,
+      "expected": 8,
+      "missing": [],
       "required_front_solves": 45,
       "required_proven_share": 0.6,
       "complete_fronts": 4,

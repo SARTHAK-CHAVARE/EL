@@ -93,9 +93,9 @@ def main(argv=None) -> int:
             r = dict(instance_id=iid, gamma=meta.gamma, w_target=meta.w_target, cv=meta.cv, rho=name,
                      rho_inr=float(rho), tec_fcfs=_f(ft), tec_spt=_f(st_), tec_eg=_f(et), tec_pcg=_f(pt),
                      tec_b=float(bt), tec_c=float(c))
-            if ft:
-                r.update(step_fcfs_to_eg_pct=_pct(ft - et, ft) if et else None,
-                         step_eg_to_b_pct=_pct(et - bt, ft) if et else None,
+            r["chain_complete"] = bool(ft and et)          # the FCFS -> EG -> B -> C chain needs FCFS and EG
+            if r["chain_complete"]:
+                r.update(step_fcfs_to_eg_pct=_pct(ft - et, ft), step_eg_to_b_pct=_pct(et - bt, ft),
                          step_b_to_c_pct=_pct(bt - c, ft), total_fcfs_to_c_pct=_pct(ft - c, ft))
             r.update(peak_aware_vs_b_pct=_pct(bt - c, bt),
                      pcg_vs_eg_pct=_pct(et - pt, et) if (et and pt) else None,
@@ -111,7 +111,8 @@ def main(argv=None) -> int:
     def summ(d):
         g = d.groupby("rho", sort=False)
         s = g.agg(n=("instance_id", "size"), n_fcfs=("tec_fcfs", "count"), n_eg=("tec_eg", "count"),
-                  n_pcg=("tec_pcg", "count"),
+                  n_pcg=("tec_pcg", "count"), n_chain=("chain_complete", "sum"),
+                  n_c_vs_b=("peak_aware_vs_b_pct", "count"), n_c_vs_rule=("opt_vs_best_rule_pct", "count"),
                   fcfs_to_eg_mean=("step_fcfs_to_eg_pct", "mean"), eg_to_b_mean=("step_eg_to_b_pct", "mean"),
                   b_to_c_mean=("step_b_to_c_pct", "mean"), fcfs_to_c_mean=("total_fcfs_to_c_pct", "mean"),
                   peak_aware_vs_b_mean=("peak_aware_vs_b_pct", "mean"), pcg_vs_eg_mean=("pcg_vs_eg_pct", "mean"),
@@ -141,6 +142,8 @@ def main(argv=None) -> int:
     (out / "README.txt").write_text(
         "P2 preview on cal2 instances: DESCRIPTIVE ONLY (2 seeds per cell); not a validated finding.\n"
         "Steps are % of FCFS TEC: FCFS -> EG (energy-greedy rule) -> B (exact energy optimum) -> C (exact peak-aware).\n"
+        "The chain columns are averaged over n_chain instances (FCFS and EG both succeeded); C-vs-B over n_c_vs_b and\n"
+        "C-vs-best-rule over n_c_vs_rule. In cal2 FCFS failed on 1 instance, so n_chain = 89 of 90 (59 of 60 for CV<=0.35).\n"
         "opt_vs_best_rule_pct = (min(EG, PCG) - C) / min(EG, PCG) * 100. rho 'eq26'/'eq30' = 350/(days x PF), PF 1,\n"
         "renegotiated-contract-demand equivalent (model/billing.py). Rule failures are counted in n_eg / n_pcg.\n")
     pd.set_option("display.width", 250)

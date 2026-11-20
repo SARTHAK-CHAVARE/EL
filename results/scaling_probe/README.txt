@@ -8,7 +8,17 @@ Design defaults, identical to cal2 (stage 1: 60 det-s / 180 s wall; tie-breaks: 
 
 Per instance it runs the full main-study strategy set, so both proof rates and the cost of an M2 block are measured:
 A, B, B_minpeak, the energy-peak front (top, P, capped solves), direct C at rho = 14 (cross-check of the front at
-larger sizes), FCFS, energy-greedy, peak-capped greedy, and the safety guard at rho = 14 and the KERC-equivalent rho.
+larger sizes), FCFS, energy-greedy, peak-capped greedy, and the safety guard at rho = 14 ONLY. (The guard evaluates
+schedules at integer paise; the KERC-equivalent rho, 350/26 INR/kW, is fractional and is NOT evaluated by this probe.)
+
+Result identity: every part file stores ``digest`` = hash(probe protocol, size design digest, solver config). An
+existing part is reused only if its digest equals the current one; otherwise the run stops (StaleProbeResult) instead
+of reusing it. Parts written before digests existed (commit 5d363fa) are accepted only through the "legacy" entry of
+``manifest.json``, which records the digest of the code that produced them; any later change to the design or budgets
+changes the current digest and those parts are then rejected too.
+
+Completeness: ``aggregate`` enumerates every expected instance of every size. Missing or unreadable parts are listed
+per size; such a size gets gate2_pass = None ("incomplete") and can never be selected as M2.
 
 Gate 2 (approved D2): a size qualifies for a larger machine-count block only if >= 90 % of the REQUIRED front solves
 are proven (top: EC stage; capped solves: EC stage or proven infeasible; P: min-peak stage, when solved). The share of

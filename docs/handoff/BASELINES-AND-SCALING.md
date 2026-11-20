@@ -32,12 +32,14 @@ gap to B 18.2 %, maximum 83.4 %).
 **Decomposition at the KERC-equivalent ρ = 350/26 = ₹13.46/kW** (renegotiated contract demand). Each step is in points of FCFS
 total cost:
 
-| Subset | FCFS → EG | EG → B | B → C | Total vs FCFS | C vs B | C vs best rule (mean / median) | Best rule within 1 % of C |
+| Subset (chain n / C-vs-B and C-vs-rule n) | FCFS → EG | EG → B | B → C | Total vs FCFS | C vs B | C vs best rule (mean / median) | Best rule within 1 % of C |
 |---|---|---|---|---|---|---|---|
-| All 90 | 18.7 | 9.4 | 4.5 | 32.6 % | 5.8 % | 12.5 % / 9.1 % | 27 % |
-| CV ≤ 0.35 (60) | 13.7 | 5.1 | 5.4 | 24.2 % | 6.4 % | 6.7 % / 3.6 % | 40 % |
-| CV = 0.75, stress (30) | 28.5 | 17.7 | 2.9 | 49.1 % | 4.7 % | 24.2 % / 23.0 % | 0 % |
-| Instances with a possible peak reduction (47) | 16.0 | 4.0 | 8.6 | 28.6 % | 11.2 % | 9.4 % / 3.7 % | 38 % |
+| All (89 / 90) | 18.7 | 9.4 | 4.5 | 32.6 % | 5.8 % | 12.5 % / 9.1 % | 27 % |
+| CV ≤ 0.35 (59 / 60) | 13.7 | 5.1 | 5.4 | 24.2 % | 6.4 % | 6.7 % / 3.6 % | 40 % |
+| CV = 0.75, stress (30 / 30) | 28.5 | 17.7 | 2.9 | 49.1 % | 4.7 % | 24.2 % / 23.0 % | 0 % |
+| Instances with a possible peak reduction (47 / 47) | 16.0 | 4.0 | 8.6 | 28.6 % | 11.2 % | 9.4 % / 3.7 % | 38 % |
+
+**[Corrected 20 Nov]** The first four columns form a chain that needs a FCFS schedule. FCFS failed on 1 instance (CV ≤ 0.35), so the chain columns average over 89 (59) instances, not 90 (60). The numbers were always computed that way; only the labels were wrong. `summary.csv` now has `n_chain`, `n_c_vs_b` and `n_c_vs_rule` columns.
 
 **S3 rule (pre-stated):** "if the best rule is within 1 % of C on ≥ 90 % of instances at ρ_eq, exact optimisation adds little".
 It is **not triggered**: 27 % overall and 40 % for CV ≤ 0.35.
@@ -55,7 +57,9 @@ It is **not triggered**: 27 % overall and 40 % for CV ≤ 0.35.
 * 4 sizes on the same 32-slot shift: γ = 19/14, W {0.40, 0.625}, CV {0, 0.35}, 2 seeds = 8 instances per size;
 * fresh seed 20261121 (not reused by the main study);
 * cal2 budgets;
-* full main-study strategy set: A, B, B_minpeak, front (including P), direct C at ρ = 14, FCFS, EG, PCG and the guard.
+* full main-study strategy set: A, B, B_minpeak, front (including P), direct C at ρ = 14, FCFS, EG, PCG and the guard
+  (guard evaluated at ρ = 14 only; the KERC-equivalent ρ was **not** evaluated in the probe);
+* each part file is tied to a design-and-budget digest, and aggregation lists every missing instance (none were missing).
 
 | Size (jobs × machines) | Required front solves proven | Complete fronts | Direct C@14 = front (where both proven) | Guard gap at ρ = 14 (max) | Solver time per instance (median / max) | **Gate 2** |
 |---|---|---|---|---|---|---|
