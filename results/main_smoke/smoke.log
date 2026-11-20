@@ -1,0 +1,56 @@
+[smoke] block m3 start 2026-11-20T17:47:46.349Z
+[runner] design=main-m3-smoke digest=8788174bf9477c21 tasks=36 already_done=0 to_run=36 workers=2
+[runner] 1/36 g0w0c0s000
+[runner] 2/36 g0w0c2s000
+[runner] 3/36 g0w0c1s000
+[runner] 4/36 g0w1c0s000
+[runner] 5/36 g0w1c1s000
+[runner] 6/36 g0w1c2s000
+[runner] 7/36 g0w2c0s000
+[runner] 8/36 g0w2c1s000
+[runner] 9/36 g0w2c2s000
+[runner] 10/36 g0w3c0s000
+[runner] 11/36 g0w3c2s000
+[runner] 12/36 g1w0c0s000
+[runner] 13/36 g1w0c1s000
+[runner] 14/36 g1w0c2s000
+[runner] 15/36 g1w1c0s000
+[runner] 16/36 g0w3c1s000
+[runner] 17/36 g1w1c1s000
+[runner] 18/36 g1w2c0s000
+[runner] 19/36 g1w1c2s000
+[runner] 20/36 g1w2c2s000
+[runner] 21/36 g1w2c1s000
+[runner] 22/36 g1w3c0s000
+[runner] 23/36 g1w3c2s000
+[runner] 24/36 g2w0c0s000
+[runner] 25/36 g2w0c1s000
+[runner] 26/36 g1w3c1s000
+[runner] 27/36 g2w0c2s000
+[runner] 28/36 g2w1c0s000
+[runner] 29/36 g2w1c2s000
+[runner] 30/36 g2w2c0s000
+[runner] 31/36 g2w2c1s000
+[runner] 32/36 g2w1c1s000
+[runner] 33/36 g2w3c0s000
+[runner] 34/36 g2w3c1s000
+[runner] 35/36 g2w2c2s000
+[runner] 36/36 g2w3c2s000
+done: {'total': 36, 'skipped': 0, 'ran': 36}  ->  results/main_smoke/m3/results.csv
+[smoke] block m3 end 2026-11-20T17:55:13.080Z
+[smoke] block m4 start 2026-11-20T17:55:13.082Z
+[runner] design=main-m4-smoke digest=c4002ac66cfdb832 tasks=12 already_done=0 to_run=12 workers=2
+[runner] 1/12 g0w0c0s000
+[runner] 2/12 g0w0c0s001
+[runner] 3/12 g0w0c1s001
+[runner] 4/12 g0w1c0s000
+[runner] 5/12 g0w1c0s001
+[runner] 6/12 g0w0c1s000
+[runner] 7/12 g0w1c1s000
+[runner] 8/12 g0w2c0s000
+[runner] 9/12 g0w2c0s001
+[runner] 10/12 g0w1c1s001
+[runner] 11/12 g0w2c1s000
+[runner] 12/12 g0w2c1s001
+done: {'total': 12, 'skipped': 0, 'ran': 12}  ->  results/main_smoke/m4/results.csv
+[smoke] block m4 end 2026-11-20T18:06:19.249Z

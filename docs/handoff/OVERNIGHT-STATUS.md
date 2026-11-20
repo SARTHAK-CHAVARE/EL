@@ -1,68 +1,56 @@
 # OVERNIGHT-STATUS
 
-_Last updated: 2026-11-20 ~17:05 UTC (22:35 IST), after P2 and P3 (Gate 2). Branch `phase3-experiments`. GitHub had `fe530e0`
-(pushed by you); newer commits are local until pushed (see "Open issues")._
-
-## Plan and approvals
-* The plan is `docs/handoff/ROADMAP-FINAL.md`.
-* Approved on 20 Nov:
-  * **D1:** front solver, with direct C at ρ = 14 kept as a cross-check and direct C kept as the fallback.
-  * **D2:** a larger machine-count block only if ≥ 90 % of required front solves are proven.
-  * **D3:** M = 3, W {0.40, 0.475, 0.55, 0.625}, 15 fresh seeds, all γ and CV levels, no B_maxpeak, W = 0.70 covered by the
-    theorem; W = 0.25 only if runtime permits.
-  * **D4:** CV = 0.75 is a stress test, separated from conclusions based on CV ≤ 0.35.
-  * **D5:** no new procurement unless parts are available or guaranteed by 23 Nov evening.
-  * **D6:** CLI first, then Streamlit.
-  * **Git:** branch only, no force-push.
+_Last updated: 2026-11-20 ~18:25 UTC (23:55 IST), after P4 (SPEC-003 and smoke run). Branch `phase3-experiments`. GitHub has
+`5d363fa`; newer commits are local until pushed (bundle provided)._
 
 ## Stage status
 | Stage | Status | Evidence |
 |---|---|---|
-| P0: branch, pins, reproducibility | Done | Clean-env reproduction; pushed by you (`fe530e0`) |
-| P1: front, guard, gaps, billing | Done; **Gate 1 passed** | `docs/handoff/FRONT-AND-BILLING.md`, `results/front_validation/` |
-| P2: energy-greedy and peak-capped rules | **Done; gate met** | `docs/handoff/BASELINES-AND-SCALING.md` §P2, `results/baselines_preview/` |
-| P3: scaling probe | **Done; Gate 2 → M₂ = 12 × 4 (narrow pass)** | `docs/handoff/BASELINES-AND-SCALING.md` §P3, `results/scaling_probe/` |
-| P4: SPEC-003 freeze and smoke run | Next | — |
-| P5 main run | **Not started** (only after P4 and your approval of the smoke estimate) | — |
+| P0: branch, pins, reproducibility | Done | Clean-env reproduction |
+| P1: front, guard, gaps, billing | Done; Gate 1 passed | `FRONT-AND-BILLING.md`, `results/front_validation/` |
+| P2: energy-greedy and peak-capped rules | Done | `BASELINES-AND-SCALING.md` §P2 (denominators corrected: 89 FCFS chains) |
+| P3: scaling probe | Done; Gate 2 → M₂ = 12 × 4 (narrow) | `BASELINES-AND-SCALING.md` §P3; probe parts now digest-checked, missing parts accounted |
+| P4: SPEC-003 and smoke run | **Done: GO recommended, awaiting your approval** | `SPEC-003-main-study.md`, `P4-SMOKE-RESULTS.md`, `results/main_smoke/` |
+| P5: main run (540 + 60) | **Not started** (Gate 4: your approval) | — |
 | P6–P10 | Pending | — |
 
-## Checks (actual results)
-* `python -m pytest`: **739 passed** (617 + 122 rule tests).
-* Benchmark reproduced.
-* Model V1.0 formulation and `04_mathematical_model/verification/*`: zero diff.
-* `results/pilot27`, `results/cal2` and `results/front_validation` unchanged.
+## P4 in brief
+* **Fixes:**
+  1. P2 decomposition: the chain columns are over 89 (59) complete FCFS chains; numbers unchanged, labels and `n_chain` columns
+     added.
+  2. Probe docs: the guard was evaluated at ρ = 14 only, not at ρ_eq.
+  3. Probe part files now carry a design-and-budget digest. Stale parts are refused; the 32 older parts are accepted via a verified
+     manifest entry.
+  4. Probe aggregation lists missing instances and never passes an incomplete size.
 
-## Key findings in this stage (descriptive)
-* **Simple rules are not enough.** At ρ_eq = ₹13.46/kW the exact optimum beats the best simple rule by 6.7 % on average for
-  CV ≤ 0.35 (12.5 % overall). The rule is within 1 % of the optimum in only 40 % / 27 % of instances, so S3's "little value" rule is
-  **not** triggered.
-* **Decomposition vs FCFS at ρ_eq (CV ≤ 0.35):** 13.7 points from energy-aware assignment, 5.1 from exact energy optimisation and
-  5.4 from peak-awareness, 24.2 % in total.
-* **Scaling.** Required front solves proven: 100 % (8 × 3), 93.3 % (12 × 4), 78.8 % (16 × 5), 60 % (20 × 6). All unproven solves are
-  at CV = 0.35; CV = 0 fronts are complete at every size. Front = direct C in 21/21 comparable instances. The guard's schedule is
-  within 5.4 % of a proven lower bound at every size.
-* **M₂ block estimate:** 60 instances at 12 × 4 ≈ 1.4 CPU-h ≈ 0.7 h wall.
+  Six regression tests were added.
+* **SPEC-003 frozen:**
+  * M3: 540 instances (W 0.40–0.625, γ 1 / 19/14 / 7/4, CV 0 / 0.35 / 0.75 stress, 15 seeds);
+  * M4: 60 instances (12 × 4, γ 19/14, W 0.40 / 0.55 / 0.70, CV 0 / 0.35, 10 seeds);
+  * pre-registered rules for break-even labels, dominance, completeness and gaps, rules vs optimiser, pairing, intervals,
+    exclusions, and separate M3 / M4 interpretation;
+  * digests: M3 `56e0f2f2f3455ffd`, M4 `e5bfe31d5230171c`.
+* **Smoke run (36 + 12 instances):**
+  * 0 missing instances and rows;
+  * fronts complete 36/36 and 11/12;
+  * direct C@14 = front 42/42;
+  * guard ≤ B everywhere;
+  * rules 100 % successful;
+  * one M4 instance (W 0.70, CV 0.35) incomplete, labelled upper bound, gap ≤ 3.7 %.
+* **Projection:** **2.8 h wall** (90 % interval 1.7–4.0 h): M3 1.9 h, M4 0.9 h.
+
+## Checks (actual)
+* 752 tests passed; benchmark reproduced.
+* Model V1.0 and the verification scripts: zero diff.
+* No earlier result file modified (`git diff -- results` empty).
+* Raw data hashes unchanged: pilot `516ee522…`, cal2 `857b9f1c…`.
 
 ## Open issues
-1. **Push:** this session still cannot push. The new commits are in `EL-phase3-p2p3.bundle` (incremental on `fe530e0`). In your EL
-   folder: `git fetch <bundle> phase3-experiments && git merge --ff-only FETCH_HEAD && git push origin phase3-experiments`.
-2. **Gate 2 is marginal** (12 × 4: 93.3 % from 8 instances; 7/8 complete fronts). I will include the block per D2, label incomplete
-   fronts as upper bounds with gaps, and flag it in SPEC-003. Say so if you would rather drop the block.
+1. **Push:** the commits after `5d363fa` are in `EL-phase3-p4.bundle`. In your EL folder:
+   `git fetch <bundle> phase3-experiments && git merge --ff-only FETCH_HEAD && git push origin phase3-experiments`.
+2. **Gate 4 (your decision):** approve the main run, and say who runs it: me, watched within one session of about 3 h; or you,
+   locally, with the commands in SPEC-003 §13.
 3. **Hardware gate (D5):** answer needed by 23 Nov evening.
 
-## Next task
-P4:
-* write `docs/handoff/SPEC-003-main-study.md` (M = 3 block per D3; M₂ = 12 × 4 block with W {0.40, 0.55, 0.70}; strategy set
-  A, B, B_minpeak, front (incl. P), direct C@14, FCFS, SPT, EG, PCG; frozen analysis rules);
-* implement the runner integration (front and rule columns, bounds and gaps), pin the new digest in tests, run a smoke run, and
-  re-estimate runtime;
-* then stop for your approval before P5.
-
-## Commands
-```
-python -m pytest -q                                      # 739 tests
-python 07_src/scripts/reproduce_benchmark.py             # benchmark
-python 07_src/scripts/validate_front.py --workers 2      # Gate 1 (~5 min)
-python 07_src/scripts/baseline_preview.py                # P2 preview (~1 s)
-python 07_src/scripts/scaling_probe.py --workers 2       # P3 / Gate 2 (~40 min; resumable)
-```
+## Next task (after approval)
+P5 main run, then P6 analysis (`analysis/` extension per SPEC-003 §§5–11) in parallel with P7 (CLI and Streamlit).
