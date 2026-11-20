@@ -1,0 +1,26 @@
+{
+  "instances": 90,
+  "fcfs_feasible": 89,
+  "eg_feasible": 90,
+  "eg_energy_optimal": 16,
+  "eg_energy_gap_pct": {
+    "mean": 18.20774404711181,
+    "max": 83.3509483077054
+  },
+  "conflict_instances": 47,
+  "rho_eq_inr": {
+    "eq26": "175/13",
+    "eq30": "35/3"
+  },
+  "s3_at_rho_eq26": {
+    "all": {
+      "share_best_rule_within_1pct": 0.26666666666666666,
+      "triggers_little_value_rule": false
+    },
+    "cv<=0.35": {
+      "share_best_rule_within_1pct": 0.4,
+      "triggers_little_value_rule": false
+    }
+  },
+  "problems": []
+}
