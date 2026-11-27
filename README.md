@@ -1,9 +1,9 @@
 # Peak-Aware Energy-Cost Production Scheduling Under Industrial Tariff Structures
 ### *A Multi-Objective Optimization Study with Physical Testbed Validation*
 
-[![Python Version](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![Python Version](https://img.shields.io/badge/Python-3.13-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![Optimization Engine](https://img.shields.io/badge/Solver-OR--Tools%20CP--SAT-orange?logo=google&logoColor=white)](https://developers.google.com/optimization)
-[![Hardware Testbed](https://img.shields.io/badge/Hardware-INA226%20%2B%20ESP32%20%2B%20RPi5-darkgreen?logo=raspberrypi&logoColor=white)](09_hardware/current_hardware_spec.md)
+[![Hardware Testbed](https://img.shields.io/badge/Hardware%20testbed-designed%2C%20not%20built-lightgrey?logo=raspberrypi&logoColor=white)](09_hardware/current_hardware_spec.md)
 [![SDG Alignment](https://img.shields.io/badge/UN%20SDG-9.4%20Industry%20%26%20Infrastructure-E5243B?logo=unitednations&logoColor=white)](https://sdgs.un.org/goals/goal9)
 [![Academic Institution](https://img.shields.io/badge/Institution-RV%20College%20of%20Engineering-800000)](https://rvce.edu.in)
 [![Verification Status](https://img.shields.io/badge/Benchmark%20Verification-24%2F24%20Assertions%20Passed-brightgreen)](04_mathematical_model/verification/verify_benchmark.py)
@@ -29,7 +29,7 @@ This research project formulates, solves, and physically validates a **tri-objec
 ### Core Hypotheses
 * **H1 (Primary):** Peak-aware scheduling ($\min EC + \rho P_{\max}$) produces schedules with lower total electricity bills than energy-cost-only scheduling ($\min EC$) if and only if the demand-charge intensity $\rho$ exceeds a distinct mathematical threshold $\rho^*$.
 * **H2:** The economic benefit of peak-aware scheduling increases monotonically with higher demand-charge rates, larger TOU spreads, tighter workload deadlines, and higher machine heterogeneity.
-* **H3:** Deterministic scheduling models driven by measured machine power profiles predict aggregate facility energy draw within an empirically validated $\pm 5\%$ error margin on a physical hardware testbed.
+* **H3 (not tested in Phase 3: no hardware was built):** Deterministic scheduling models driven by measured machine power profiles predict aggregate facility energy draw within an empirically validated $\pm 5\%$ error margin on a physical hardware testbed.
 
 ---
 
@@ -81,9 +81,13 @@ $$\rho^* = \frac{EC^{(C)} - EC^{(B)}}{P_{\max}^{(B)} - P_{\max}^{(C)}} = \frac{9
 
 ---
 
-## 🛠️ Hardware Testbed & Measurement Architecture
+## 🛠️ Hardware Testbed & Measurement Architecture (design only — not built)
 
-To close the sim-to-real gap, the mathematical schedule is deployed to a low-voltage (12V DC) programmable machine-load testbed:
+> **Status (Nov 2026):** the testbed below is a **design**. No parts were procured and nothing was measured; the Phase 3
+> demonstration is software-only (CLI + Streamlit). Figures such as sensor accuracy and telemetry rate are component
+> datasheet/design targets, not measured performance.
+
+The planned design deploys the mathematical schedule to a low-voltage (12V DC) programmable machine-load testbed:
 
 ```mermaid
 flowchart LR
@@ -114,7 +118,7 @@ flowchart LR
     ESP -- "Logged V, I, P Telemetry (MQTT)" --> RPi
 ```
 
-> **Electrical Safety Notice:** All laboratory experiments operate strictly on safe **12V DC**. The 12V 10A power supply unit (SMPS) is housed in an industrial enclosed chassis with zero student exposure to AC mains voltages.
+> **Electrical Safety Notice:** All laboratory experiments operate strictly on safe **12V DC**. The planned 12V 10A power supply unit (SMPS) would be housed in an industrial enclosed chassis with zero student exposure to AC mains voltages.
 
 ---
 
@@ -141,6 +145,12 @@ EL/
 │   ├── formulation/           # Mathematical Model v1 (unrelated parallel machines)
 │   └── verification/          # Standalone Python combinatorial verifier (verify_benchmark.py)
 ├── 05_planning/               # Master execution plan and staged task roadmaps
+├── 07_src/                    # Phase 3 code: model/ (CP-SAT solver, front, billing), experiments/, analysis/,
+│                              #   app/ (CLI + Streamlit prototype), scripts/
+├── docs/handoff/              # Phase 3 specs, results and status (ROADMAP-FINAL, SPEC-003, OVERNIGHT-STATUS, ...)
+├── examples/                  # Demo instances (benchmark + generated shops) in editable JSON
+├── results/                   # Raw experiment outputs with manifests and digests (pilot27, cal2, probes, smoke)
+├── tests/                     # Automated tests (pytest), incl. exhaustive-oracle checks
 ├── 09_hardware/               # Testbed hardware specifications (INA226, ESP32, RPi 5, DC loads)
 ├── 11_report/                 # Project documentation, presentations, and phase reports
 ├── 12_tools/                  # PDF and data processing helper utilities
@@ -157,7 +167,17 @@ EL/
 - Python 3.10+ (Standard Library only for verification)
 - Git
 
-### 2. Clone the Repository
+### 2. Phase 3 prototype (Python 3.13)
+```bash
+pip install -r requirements.txt            # exact pins; full lock: requirements-lock.txt
+python -m pytest -q                        # automated tests
+python 07_src/scripts/reproduce_benchmark.py
+python 07_src/app/cli.py solve --instance examples/shop_8x3_kerc.json --out out/   # schedules, bills, charts
+streamlit run 07_src/app/ui.py             # interactive demo
+```
+Monthly bills from the tool are **partial estimates** (demand charge plus the energy of the scheduled shift only).
+
+### 2b. Clone the Repository
 ```bash
 git clone https://github.com/SARTHAK-CHAVARE/EL.git
 cd EL
@@ -204,10 +224,10 @@ Tariff structures are calibrated against the official **Karnataka Electricity Re
 | Tariff Period | Slot Range (Illustrative Shift) | Clock Hours (Official Tariff) | Energy Charge Rate |
 |---|:---:|:---:|:---:|
 | **Off-Peak Incentive** | Slots 1–2 | 22:00 – 06:00 | **₹ 5.60 / kWh** (-₹ 1.00 rebate) |
-| **Peak Surcharge** | Slots 3–5 | 18:00 – 22:00 | **₹ 7.60 / kWh** (+₹ 2.00 surcharge) |
+| **Peak Surcharge** | Slots 3–5 | 18:00 – 22:00 | **₹ 7.60 / kWh** (+₹ 1.00 surcharge) |
 | **Normal Industrial Rate** | Slots 6–8 | 06:00 – 18:00 | **₹ 6.60 / kWh** (Base tariff) |
 
-* **Official Utility Billing Demand:** ₹ 350 / kVA / month assessed over 15-minute sliding integration windows.
+* **Official Utility Billing Demand:** ₹ 350 / kVA / month on billing demand = max(recorded MD, 0.90 × contract demand). The MD integration interval is **not verified** against the tariff order (the order's only 15-minute reference concerns data updates, not metering).
 * **Shift Sensitivity Parameter:** Modeled as a continuous variable $\rho \in [0, 50]\text{ ₹/kW}$ per 8-hour shift equivalent.
 
 ---
@@ -233,10 +253,11 @@ Our mathematical formulation synthesizes and improves upon foundational papers:
 |:---:|:---:|---|:---:|---|
 | **Phase I** | Aug 2026 | Problem Scoping & Literature Review | ✅ **Completed** | Literature Matrix & Problem Definition |
 | **Phase II** | Sep – Oct 2026 | Mathematical Model v1 & Benchmark Proof | ✅ **Completed** | Model v1, Combinatorial Verifier (24/24 tests) |
-| **Phase III-A** | Nov 2026 | Production Solver Implementation | 🔄 **In Progress** | Google OR-Tools CP-SAT Scheduling Engine |
-| **Phase III-B** | Dec 2026 | 4-Factor Factorial Sensitivity Suite | ⏳ **Upcoming** | Automated batch runs across 100+ instances |
-| **Phase III-C** | Jan 2027 | Hardware Testbed Assembly & Testing | ⏳ **Upcoming** | INA226 physical validation & power logging |
-| **Phase III-D** | Feb 2027 | Final Capstone Report & Presentation | ⏳ **Upcoming** | Final Project Report & Academic Manuscript |
+| **Phase III-A** | Nov 2026 | Production Solver, Energy–Peak Front, Billing | ✅ **Completed** | CP-SAT engine; exact front & break-even; partial KERC bill (branch `phase3-experiments`) |
+| **Phase III-B** | Nov – Dec 2026 | Factorial Study (SPEC-003: 540 + 60 instances) | 🔄 **Designed & smoke-tested; main run pending** | `docs/handoff/SPEC-003-main-study.md`, `P4-SMOKE-RESULTS.md` |
+| **Phase III-C** | Nov 2026 | Prototype (CLI + Streamlit) | ✅ **Completed** | `07_src/app/`, `examples/` |
+| **Phase III-D** | 1 Dec 2026 (demo) · 7 Dec 2026 (submission) | Demo, Report & Presentation | ⏳ **Upcoming** | Demo, final report, poster/PPT |
+| *Hardware testbed* | — | INA226 physical validation | ❌ **Not built** (out of scope for the Dec 2026 submission) | Design only (`09_hardware/`) |
 
 ---
 
