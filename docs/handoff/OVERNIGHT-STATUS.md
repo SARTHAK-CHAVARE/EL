@@ -1,7 +1,7 @@
 # OVERNIGHT-STATUS
 
-_Last updated: 2026-11-27 (IST evening), after P7 (prototype: CLI + Streamlit) and the README correction. Branch
-`phase3-experiments`. GitHub has `5d363fa`; newer commits are local until pushed (bundle provided)._
+_Last updated: 2026-11-27 ~19:00 IST. Branch `phase3-experiments`. GitHub has `1509be5` (P7, pushed by you); the main-run
+wrapper commit is in `EL-phase3-runner.bundle`._
 
 ## Stage status
 | Stage | Status | Evidence |
@@ -11,7 +11,7 @@ _Last updated: 2026-11-27 (IST evening), after P7 (prototype: CLI + Streamlit) a
 | P2: energy-greedy and peak-capped rules | Done | `BASELINES-AND-SCALING.md` §P2 (denominators corrected: 89 FCFS chains) |
 | P3: scaling probe | Done; Gate 2 → M₂ = 12 × 4 (narrow) | `BASELINES-AND-SCALING.md` §P3 |
 | P4: SPEC-003 and smoke run | Done: GO recommended, **awaiting your approval** | `SPEC-003-main-study.md`, `P4-SMOKE-RESULTS.md`, `results/main_smoke/` |
-| P5: main run (540 + 60) | **Not started** (Gate 4: your approval) | — |
+| P5: main run (540 + 60) | **Approved (GO, 27 Nov); runs on your PC** via `07_src/scripts/run_main.py` | — |
 | P6: analysis, MAIN-RESULTS | Pending (needs P5) | — |
 | P7: prototype (CLI, then Streamlit) | **Done** | `07_src/app/`, `examples/`, `tests/test_app.py` |
 | README correction | **Done** | `README.md` |
@@ -71,11 +71,26 @@ nothing while energy still costs more. The app states this; it is a finding, not
 * No result file modified.
 * Charts checked visually on the benchmark, 8 × 3 and 12 × 4 examples.
 
+## P5 hand-off: main run on your PC
+* `07_src/scripts/run_main.py` runs the SPEC-003 §13 commands unchanged. Before that, it does two things:
+  * records the machine (Python, OS, CPU, every package version, git commit, workers) in
+    `results/main_run/environment.json`;
+  * re-solves the 6 fastest smoke instances and compares every non-timing column with the committed smoke results.
+    A mismatch stops the run before any main instance is solved.
+* Checked here:
+  * the check passes on this machine (6/6 match, 65 s);
+  * a throwaway-clone end-to-end run (`--limit 1`) completes both blocks;
+  * a tampered smoke value makes it stop with exit 3 before any block;
+  * 5 new unit tests.
+* `.gitattributes` marks only the new `results/main_*` folders as `-text`, so Windows line-ending conversion cannot alter the raw
+  CSVs. Existing files are unaffected.
+* **Runtime rule (SPEC-003 §13):** with 2 workers the projection is 2.8 h. With more workers, scale it by 2 / workers. If the run
+  exceeds 1.5 × the scaled projection, it is paused and reported.
+
 ## Open issues
-1. **Push:** the commits after `5d363fa` are in `EL-phase3-p7.bundle`, which supersedes `EL-phase3-p4.bundle`. In your EL folder:
-   `git fetch <bundle> phase3-experiments && git merge --ff-only FETCH_HEAD && git push origin phase3-experiments`.
-2. **Gate 4 (your decision):** approve the main run (about 2.8 h wall) and say who runs it.
-3. **D5:** no components were confirmed by 23 Nov. Under D5 the demo is software-only unless you say otherwise.
+1. **Push** `EL-phase3-runner.bundle` (after `1509be5`), then run the main study on your PC and push `results/main_*`.
+2. **D5 / hardware:** you said you have parts. I need the list of components physically in hand before deciding anything.
+   Until then the demo plan stays software-only; no measurements will be invented.
 
 ## Next task
-P8: demo script and slides, using the prototype and the examples above. Then P5/P6 once the main run is approved.
+P6 analysis as soon as `results/main_*` is pushed. Meanwhile P8: demo script and slides.
