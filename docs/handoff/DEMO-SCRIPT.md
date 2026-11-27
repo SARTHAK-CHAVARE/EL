@@ -108,15 +108,16 @@ main-study slide is filled from `MAIN-RESULTS.md` once P6 is done; until then, *
 
 **Upload JSON.** Instances are plain JSON (see `examples/`), so a plant's own jobs and machines can be entered.
 
-## 6. Main study (1 min): fill from MAIN-RESULTS.md after P6
-* Design: 540 instances of 8 × 3 and 60 of 12 × 4.
-* Factors: workload, peak/off-peak price ratio, and job-power variability.
-* All results are exact or explicitly labelled bounds.
-* One slide with:
-  * how often a peak reduction is possible;
-  * the break-even distribution against the KERC ₹13.46;
-  * the saving at KERC rates under both contract-demand scenarios;
-  * when simple rules are enough.
+## 6. Main study (1 min): 540 instances of 8 × 3 (MAIN-RESULTS.md; 12 × 4 pending)
+Show figures F1 and F4 from `results/main_analysis/figures/`. Speak to four numbers (CV ≤ 0.35, KERC ρ ₹13.46, all exact):
+* **A lower peak is possible in 79 % of instances.** In almost all of them it already pays at KERC rates; the exact
+  break-even median is ₹3.18/kW per shift.
+* **Shift cost falls 7.2 % [6.8, 7.6] vs the energy-only optimum,** worth **₹3,345 per month** on the partial bill
+  **if contract demand is renegotiated**.
+* **With a fixed contract demand only ₹127 per month remains.** KERC's 90 % floor eats it, and at high workload the
+  result is negative.
+* **Simple rules are near-optimal only when all jobs draw the same power.** Otherwise the optimiser is 13–21 % cheaper on
+  average.
 
 ## 7. Honest scope (say it before they ask)
 * **Hardware:** a 12 V testbed was designed but not built. Nothing was physically measured; this is a software demonstration.

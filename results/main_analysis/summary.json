@@ -1,0 +1,277 @@
+{
+  "blocks": {
+    "m3": {
+      "block": "m3",
+      "design": "main-m3",
+      "digest": "56e0f2f2f3455ffd",
+      "instances_expected": 540,
+      "instances_present": 540,
+      "instances_missing": [],
+      "front_complete": 539,
+      "front_complete_share": 0.9981481481481481,
+      "intervals_valid": true,
+      "m4_exact_claim_allowed": true,
+      "statuses": {
+        "A": 540,
+        "B": 539,
+        "B_minpeak": 531,
+        "C14": 407,
+        "C14_primary": 532,
+        "n": 540
+      },
+      "guard_optimal_grid": "2695/2700",
+      "guard_gap_max_pct": 5.35848920658289,
+      "guard_gap_positive": 2,
+      "cross_check": {
+        "comparable": 531,
+        "equal": 531
+      },
+      "exact_vs_all_max_cell_diff_pp": 0.56801438397755,
+      "s3_at_eq26": {
+        "cv<=0.35": {
+          "n": 360,
+          "share_best_rule_within_1pct": 0.33611111111111114
+        },
+        "cv=0.75": {
+          "n": 179,
+          "share_best_rule_within_1pct": 0.0111731843575419
+        }
+      },
+      "rho_eq_inr": {
+        "eq22": "175/11",
+        "eq22_pf0.9": "1750/99",
+        "eq26": "175/13",
+        "eq26_pf0.9": "1750/117",
+        "eq30": "35/3",
+        "eq30_pf0.9": "350/27"
+      },
+      "cpu_s": {
+        "total": 11016.3888,
+        "mean": 20.40072,
+        "median": 10.29935,
+        "max": 168.9758
+      },
+      "headline_eq26": {
+        "cv<=0.35:sav_B_pct": {
+          "mean": 7.167429074715032,
+          "ci": [
+            6.752681373503003,
+            7.598075367729284
+          ],
+          "n_valid": 360,
+          "n_total": 360
+        },
+        "cv<=0.35:sav_Bmin_pct": {
+          "mean": 6.79751908884072,
+          "ci": [
+            6.399372047829744,
+            7.205340735082518
+          ],
+          "n_valid": 359,
+          "n_total": 360
+        },
+        "cv<=0.35:opt_value_pct": {
+          "mean": 6.887651408629067,
+          "ci": [
+            6.450202373531513,
+            7.3442595215961335
+          ],
+          "n_valid": 360,
+          "n_total": 360
+        },
+        "cv<=0.35:ach_B_pct": {
+          "mean": 7.167429074715032,
+          "ci": [
+            6.749909503566889,
+            7.598050970714948
+          ],
+          "n_valid": 360,
+          "n_total": 360
+        },
+        "cv<=0.35:step_fcfs_eg_pct": {
+          "mean": 14.570522712420889,
+          "ci": [
+            13.93928146621395,
+            15.199791306009814
+          ],
+          "n_valid": 360,
+          "n_total": 360
+        },
+        "cv<=0.35:step_eg_b_pct": {
+          "mean": 5.1237176284859025,
+          "ci": [
+            4.574455529696053,
+            5.681087031448936
+          ],
+          "n_valid": 360,
+          "n_total": 360
+        },
+        "cv<=0.35:step_b_c_pct": {
+          "mean": 5.995179012834179,
+          "ci": [
+            5.651234917964264,
+            6.335043567168323
+          ],
+          "n_valid": 360,
+          "n_total": 360
+        },
+        "cv<=0.35:total_fcfs_c_pct": {
+          "mean": 25.689419353740973,
+          "ci": [
+            25.344715785918964,
+            26.033381620771394
+          ],
+          "n_valid": 360,
+          "n_total": 360
+        },
+        "cv<=0.35:bill_renegotiated_saving_pct": {
+          "mean": 7.167429074715032,
+          "ci": [
+            6.753865953266193,
+            7.577802295816091
+          ],
+          "n_valid": 360,
+          "n_total": 360
+        },
+        "cv<=0.35:bill_fixed_saving_pct": {
+          "mean": 0.3154631550105454,
+          "ci": [
+            0.20069985737507642,
+            0.42765322652552196
+          ],
+          "n_valid": 360,
+          "n_total": 360
+        },
+        "cv<=0.35:bill_renegotiated_saving_inr": {
+          "mean": 3344.973236111111,
+          "ci": [
+            3158.4828249999996,
+            3540.757313888889
+          ],
+          "n_valid": 360,
+          "n_total": 360
+        },
+        "cv<=0.35:bill_fixed_saving_inr": {
+          "mean": 127.18990277777777,
+          "ci": [
+            73.52321666666664,
+            183.86074999999997
+          ],
+          "n_valid": 360,
+          "n_total": 360
+        },
+        "cv=0.75:sav_B_pct": {
+          "mean": 4.309618573483643,
+          "ci": [
+            3.1777556793592665,
+            5.512674738895971
+          ],
+          "n_valid": 178,
+          "n_total": 180
+        },
+        "cv=0.75:sav_Bmin_pct": {
+          "mean": 3.8644549164343087,
+          "ci": [
+            2.820417107631849,
+            5.011591260055595
+          ],
+          "n_valid": 171,
+          "n_total": 180
+        },
+        "cv=0.75:opt_value_pct": {
+          "mean": 21.38431821712686,
+          "ci": [
+            20.00518207466356,
+            22.85145456878679
+          ],
+          "n_valid": 179,
+          "n_total": 180
+        },
+        "cv=0.75:ach_B_pct": {
+          "mean": 4.264163685883436,
+          "ci": [
+            3.143047236858789,
+            5.489156765056951
+          ],
+          "n_valid": 180,
+          "n_total": 180
+        },
+        "cv=0.75:step_fcfs_eg_pct": {
+          "mean": 36.14933898046176,
+          "ci": [
+            34.59142487067201,
+            37.6922755579689
+          ],
+          "n_valid": 178,
+          "n_total": 180
+        },
+        "cv=0.75:step_eg_b_pct": {
+          "mean": 14.847997753033608,
+          "ci": [
+            13.22567960816441,
+            16.477838709375348
+          ],
+          "n_valid": 178,
+          "n_total": 180
+        },
+        "cv=0.75:step_b_c_pct": {
+          "mean": 2.717147163895222,
+          "ci": [
+            2.028272371658485,
+            3.4263196724817497
+          ],
+          "n_valid": 178,
+          "n_total": 180
+        },
+        "cv=0.75:total_fcfs_c_pct": {
+          "mean": 53.7144838973906,
+          "ci": [
+            52.879101674695676,
+            54.472369106906854
+          ],
+          "n_valid": 178,
+          "n_total": 180
+        },
+        "cv=0.75:bill_renegotiated_saving_pct": {
+          "mean": 4.309618573483643,
+          "ci": [
+            3.1808320875649696,
+            5.548811740862786
+          ],
+          "n_valid": 178,
+          "n_total": 180
+        },
+        "cv=0.75:bill_fixed_saving_pct": {
+          "mean": 0.38718753178084026,
+          "ci": [
+            0.14980515680950865,
+            0.6032100630552707
+          ],
+          "n_valid": 178,
+          "n_total": 180
+        },
+        "cv=0.75:bill_renegotiated_saving_inr": {
+          "mean": 1603.6733374603175,
+          "ci": [
+            1191.5557885714286,
+            2025.7260084126983
+          ],
+          "n_valid": 178,
+          "n_total": 180
+        },
+        "cv=0.75:bill_fixed_saving_inr": {
+          "mean": 135.41833746031747,
+          "ci": [
+            36.93126523809523,
+            221.9074488888889
+          ],
+          "n_valid": 178,
+          "n_total": 180
+        }
+      }
+    }
+  },
+  "problems": [],
+  "n_boot": 2000,
+  "bill_label": "PARTIAL MONTHLY BILL ESTIMATE (KERC HT-2(a) demand charge + energy of the scheduled shift only; excludes fixed charges, taxes, other loads/shifts, PF surcharge/incentive, ToD applicability rules and other billing items; assumes the same schedule every counted day and that this shift sets the monthly MD)"
+}

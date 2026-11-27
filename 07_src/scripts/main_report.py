@@ -119,7 +119,13 @@ def extract(g: pd.DataFrame, iid: str, problems: Problems) -> dict:
         bpk = rec["B"][1]
         found_lower = any(pk < bpk for _, pk in pts)
         rec["reduction_vs_B"] = found_lower if rec["front_complete"] else (True if found_lower else None)
-        rec["free_reduction_vs_B"] = (rec["top_peak_w"] < bpk) if rec["top_proven"] and rec["b_ok"] else None
+        if rec["front_complete"] and rec["b_ok"] and pts:      # complete front: its min-EC points carry the proven min peak
+            ec_min = min(e for e, _ in pts)
+            if ec_min != rec["B"][0]:
+                problems.add(f"{iid}: front min EC {ec_min} != proven B EC {rec['B'][0]}")
+            rec["free_reduction_vs_B"] = min(pk for e, pk in pts if e == ec_min) < bpk
+        else:
+            rec["free_reduction_vs_B"] = (rec["top_peak_w"] < bpk) if rec["top_proven"] and rec["b_ok"] else None
     else:
         rec["reduction_vs_B"] = rec["free_reduction_vs_B"] = None
     rec["tradeoff"] = (len(pts) >= 2) if rec["front_complete"] else (True if len(pts) >= 2 else None)

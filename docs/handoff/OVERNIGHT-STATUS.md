@@ -1,21 +1,21 @@
 # OVERNIGHT-STATUS
 
-_Last updated: 2026-11-27 ~19:00 IST. Branch `phase3-experiments`. GitHub has `1509be5` (P7, pushed by you); the main-run
-wrapper commit is in `EL-phase3-runner.bundle`._
+_Last updated: 2026-11-28 ~00:30 IST. Branch `phase3-experiments`. GitHub has `ea8a0a4`; newer commits are in
+`EL-phase3-p6.bundle`._
 
 ## Stage status
 | Stage | Status | Evidence |
 |---|---|---|
-| P0: branch, pins, reproducibility | Done | Clean-env reproduction |
-| P1: front, guard, gaps, billing | Done; Gate 1 passed | `FRONT-AND-BILLING.md`, `results/front_validation/` |
-| P2: energy-greedy and peak-capped rules | Done | `BASELINES-AND-SCALING.md` §P2 (denominators corrected: 89 FCFS chains) |
-| P3: scaling probe | Done; Gate 2 → M₂ = 12 × 4 (narrow) | `BASELINES-AND-SCALING.md` §P3 |
-| P4: SPEC-003 and smoke run | Done: GO recommended, **awaiting your approval** | `SPEC-003-main-study.md`, `P4-SMOKE-RESULTS.md`, `results/main_smoke/` |
-| P5: main run (540 + 60) | **Approved (GO, 27 Nov); runs on your PC** via `07_src/scripts/run_main.py` | — |
-| P6: analysis, MAIN-RESULTS | Pending (needs P5) | — |
-| P7: prototype (CLI, then Streamlit) | **Done** | `07_src/app/`, `examples/`, `tests/test_app.py` |
-| README correction | **Done** | `README.md` |
-| P8–P10: demo script, slides/poster, report, final package | Pending | — |
+| P0–P4 | Done | earlier docs |
+| P5: main run | **M3 complete (540/540, Linux, this session). M4: 44/60.** The run was stopped by the 2-hour background limit; it is resumable. | `results/main_m3/`, `results/main_m4/parts/`, `results/main_run/` |
+| P6: analysis | **M3 done** (0 problems). M4 is added when complete. | `MAIN-RESULTS.md`, `results/main_analysis/` |
+| P7: prototype | Done | `07_src/app/` |
+| P9: demo script | Done; the main-study slide is filled with M3 | `DEMO-SCRIPT.md` |
+| Remaining | Finish M4 (16 instances, about 15–20 min) and re-run the analysis; slides/poster; report | — |
+
+The Windows check on your PC (27 Nov) differed from the Linux smoke results. The differences were in by-product columns
+(sum of completion times, A's energy cost) plus one lost proof on a 12 × 4 instance. All official results come from this
+Linux machine, where the check was 6/6 identical.
 
 ## P7 in brief
 * **Shared functions** (`07_src/app/core.py`, `io.py`, `plots.py`): the CLI and the web app call the same code. It reuses the
