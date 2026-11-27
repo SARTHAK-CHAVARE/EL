@@ -1,13 +1,14 @@
 # MAIN-RESULTS: SPEC-003 main study
 
-_Status 28 Nov 2026._
+_Status 28 Nov 2026: complete._
 * **M3 (8 jobs × 3 machines, 540 instances):** complete and analysed.
-* **M4 (12 × 4, 60 instances):** 44 of 60 solved. The run was stopped at this session's 2-hour background limit; it is
-  resumable and finished instances are kept. M4 results will be added here; until then no M4 statement is made.
+* **M4 (12 × 4, 60 instances):** complete and analysed. Its run was interrupted once by this session's 2-hour background
+  limit and resumed; finished instances were kept and the re-aggregated M3 data stayed byte-identical.
 
 Sources:
-* `results/main_m3/` (raw rows, manifest, digest `56e0f2f2f3455ffd`);
-* `results/main_analysis/m3/` (tables), `results/main_analysis/figures/` (F1–F4);
+* `results/main_m3/` (raw rows, manifest, digest `56e0f2f2f3455ffd`) and `results/main_m4/` (digest `e5bfe31d5230171c`);
+* `results/main_analysis/{m3,m4}/` (tables), `results/main_analysis/m3_vs_m4_shared.csv`,
+  `results/main_analysis/figures/` (F1–F4, M3);
 * `results/main_run/` (environment record, run log, reproducibility check).
 
 Analysis by `07_src/scripts/main_report.py --n-boot 2000`, figures by `07_src/scripts/main_figures.py`.
@@ -119,16 +120,67 @@ With a **fixed contract demand, most of the saving disappears** (a §12 item, ob
 * CV = 0.75 (178 chains): total 53.71 %, made up of 36.15 + 14.85 + 2.72 points. Most of that comes from moving energy
   in time, and little from the peak.
 
-## 6. What would change the conclusions (SPEC-003 §12), M3
+## 6. What would change the conclusions (SPEC-003 §12)
 | Item | Observed? |
 |---|---|
 | Best rule within 1 % of C on ≥ 90 % (S3) | No (33.6 %) |
 | Fixed-contract-demand bills erase most of the savings | **Yes:** ₹127 vs ₹3,345 per month; negative at high workload. Reported as a main finding. |
 | Front ≠ direct C at ρ = 14 where both proven | No (531/531) |
 | Exact-set and all-instance estimates diverge (> 1 point) | No (max 0.57) |
-| M4 pattern differs from M3 at shared settings | Pending M4 |
+| M4 pattern differs from M3 at shared settings | **Yes, in the workload trend** (§7 below) |
+| M4: exact-set vs all-instance (> 1 point) | **Yes, one cell** (W 0.70, CV 0.35; up to 2.42 points); stated in §7 |
 
-## 7. Plain-language summary (M3)
+## 7. M4: 12 jobs × 4 machines (generality check; never pooled with M3)
+**Design and integrity:**
+* γ 19/14 (KERC), W ∈ {0.40, 0.55, 0.70}, CV ∈ {0, 0.35}, 10 seeds per cell: 60 instances, 0 missing.
+* **Fronts complete: 55/60 (91.7 %).** This is at or above the 90 % pre-registered bar, so exact M4 statements are allowed.
+  The 5 incomplete fronts are all in the cell W 0.70, CV 0.35.
+* Proven: B 60/60, B_minpeak 56/60.
+* Front vs direct C at ρ = 14 (both proven): 44/44 equal.
+* Recomputed values vs stored rows: 0 differences.
+* CPU per instance: median 32 s, p95 247 s, max 464 s.
+
+**Results at ρ_eq (D 26, PF 1):**
+
+| Question | Result |
+|---|---|
+| Peak reduction possible | 95 % of instances; costly trade-off 95 % |
+| Exact break-even | 52 exact, median ₹2.87/kW per shift (IQR 1.35–5.31, max 6.00). 5 upper bounds (2.59–7.00; listed, not pooled); 3 no-reduction. Pays at KERC rates in 95 %. |
+| Saving vs energy-only B (exact set, n = 55) | **9.29 % [8.24, 10.24]**. By W 0.40 / 0.55 / 0.70: 15.19 / 7.26 / 5.42 %. By CV 0 / 0.35: 7.34 / 11.24 %. Against B_minpeak: 8.82 %. |
+| Partial monthly bill (n = 55) | Renegotiated contract demand **₹5,491 per month [4,906, 6,060]**; fixed **₹242 [93, 389]**. At W 0.40 the fixed-demand saving is −₹355. |
+| Value of exact optimisation | 8.03 % [7.05, 9.04] over the best rule: CV 0 gives 1.05 %, CV 0.35 gives 15.01 %. S3 not triggered (best rule within 1 % on 30.9 %). |
+| FCFS → C | 26.02 % of FCFS TEC (55 complete chains) |
+
+**Exact set vs all instances (§7): a material difference, stated.**
+* In the cell W 0.70, CV 0.35 the exact-set mean saving uses only 5 of 10 instances: 6.94 % at ρ_eq.
+* The achieved saving over all 10 (a lower bound on the optimal saving) is 5.66 %, a difference of 1.28 points. At ρ = 50
+  the difference reaches 2.42 points.
+* At ρ = 14 the cell's true mean lies between 5.92 % (achieved) and 7.50 % (bound-based upper limit).
+* The exact-set value for that cell is therefore likely **optimistic**. The block-level estimate at ρ_eq with all 60
+  instances, as achieved savings, is 9.08 % [8.05, 10.01], against 9.29 % for the exact set.
+
+**M4 vs M3 at the shared settings** (γ 19/14, W 0.40 and 0.55, CV 0 and 0.35; descriptive; `m3_vs_m4_shared.csv`):
+
+| Block | W 0.40 | W 0.55 |
+|---|---|---|
+| M3 | 8.06 % | 8.38 % |
+| M4 | **15.19 %** | 7.26 % |
+
+* M3's saving is flat across the two workloads; M4's is twice as high at the low workload.
+* By cell at ρ_eq:
+  * W 0.40, CV 0: M3 9.92 %, M4 13.24 %;
+  * W 0.40, CV 0.35: M3 6.20 %, M4 17.15 %;
+  * W 0.55, CV 0: M3 6.83 %, M4 4.89 %;
+  * W 0.55, CV 0.35: M3 9.92 %, M4 9.64 %.
+* So the **pattern differs** (a §12 item). With four machines at low workload there are more ways to avoid running machines
+  together. This explanation is plausible but **not tested**.
+* With 10–15 instances per cell this is a descriptive contrast, not an estimate of a size effect. The direction of the
+  main findings is the same in both blocks:
+  * reductions are common and cheap;
+  * savings hinge on renegotiating contract demand;
+  * rules suffice mainly at CV 0.
+
+## 8. Plain-language summary
 * For an 8-job, 3-machine shift under KERC prices, a lower peak than the energy-only schedule is possible in about 4 of
   5 instances, unless job powers vary a lot.
 * In nearly all of those, cutting the peak already pays at the KERC demand charge. The exact break-even is typically
@@ -138,10 +190,14 @@ With a **fixed contract demand, most of the saving disappears** (a §12 item, ob
   high workload it can turn into a loss.
 * Simple energy-aware rules capture most of the benefit only when all jobs draw the same power. Otherwise the exact
   optimiser is on average 13 % (CV 0.35) to 21 % (CV 0.75) cheaper.
+* The larger shop (12 jobs × 4 machines) shows the same picture, with bigger savings at low workload: 9.3 % of shift
+  cost, about ₹5,500 per month if contract demand is renegotiated, and about ₹240 if it is not.
 
-## 8. Limits
+## 9. Limits
 * Synthetic instances from the documented generator; no plant data; no physical measurement (hardware not built).
 * Bills are partial and assume the same schedule every shift-day.
-* Results are for 8 × 3 (and, pending, 12 × 4), 32 slots of 15 minutes, and the 1-CP-SAT-worker budgets of SPEC-003.
+* Results are for 8 × 3 and 12 × 4, 32 slots of 15 minutes, and the 1-CP-SAT-worker budgets of SPEC-003. At 12 × 4 the
+  hardest cell (W 0.70, CV 0.35) already leaves half the fronts incomplete, so larger shops will need bounds, not exact
+  fronts.
 * Proof status can depend on platform: a Windows run of the same smoke instances found equally optimal but different
   schedules and lost one proof. All results here come from one Linux machine.

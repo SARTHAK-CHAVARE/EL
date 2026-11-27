@@ -269,6 +269,164 @@
           "n_total": 180
         }
       }
+    },
+    "m4": {
+      "block": "m4",
+      "design": "main-m4",
+      "digest": "e5bfe31d5230171c",
+      "instances_expected": 60,
+      "instances_present": 60,
+      "instances_missing": [],
+      "front_complete": 55,
+      "front_complete_share": 0.9166666666666666,
+      "intervals_valid": true,
+      "m4_exact_claim_allowed": true,
+      "statuses": {
+        "A": 60,
+        "B": 60,
+        "B_minpeak": 56,
+        "C14": 26,
+        "C14_primary": 44,
+        "n": 60
+      },
+      "guard_optimal_grid": "275/300",
+      "guard_gap_max_pct": 8.420486176325968,
+      "guard_gap_positive": 19,
+      "cross_check": {
+        "comparable": 44,
+        "equal": 44
+      },
+      "exact_vs_all_max_cell_diff_pp": 2.42010946034104,
+      "s3_at_eq26": {
+        "all": {
+          "n": 55,
+          "share_best_rule_within_1pct": 0.3090909090909091
+        }
+      },
+      "rho_eq_inr": {
+        "eq22": "175/11",
+        "eq22_pf0.9": "1750/99",
+        "eq26": "175/13",
+        "eq26_pf0.9": "1750/117",
+        "eq30": "35/3",
+        "eq30_pf0.9": "350/27"
+      },
+      "cpu_s": {
+        "total": 4386.5961,
+        "mean": 73.109935,
+        "median": 32.0751,
+        "max": 464.1209
+      },
+      "headline_eq26": {
+        "all:sav_B_pct": {
+          "mean": 9.290096481820582,
+          "ci": [
+            8.244310544509387,
+            10.244930212947459
+          ],
+          "n_valid": 55,
+          "n_total": 60
+        },
+        "all:sav_Bmin_pct": {
+          "mean": 8.82283488230765,
+          "ci": [
+            7.828188167507261,
+            9.721010970291792
+          ],
+          "n_valid": 53,
+          "n_total": 60
+        },
+        "all:opt_value_pct": {
+          "mean": 8.030171923579614,
+          "ci": [
+            7.053036335672046,
+            9.037027893596182
+          ],
+          "n_valid": 55,
+          "n_total": 60
+        },
+        "all:ach_B_pct": {
+          "mean": 9.076730300925117,
+          "ci": [
+            8.053483722062955,
+            10.014872549775113
+          ],
+          "n_valid": 60,
+          "n_total": 60
+        },
+        "all:step_fcfs_eg_pct": {
+          "mean": 13.327889038172493,
+          "ci": [
+            12.2661237864169,
+            14.472671018123604
+          ],
+          "n_valid": 55,
+          "n_total": 60
+        },
+        "all:step_eg_b_pct": {
+          "mean": 5.232986213218084,
+          "ci": [
+            4.10963411040355,
+            6.332572096307256
+          ],
+          "n_valid": 55,
+          "n_total": 60
+        },
+        "all:step_b_c_pct": {
+          "mean": 7.462847051608864,
+          "ci": [
+            6.64575744462578,
+            8.23225552208261
+          ],
+          "n_valid": 55,
+          "n_total": 60
+        },
+        "all:total_fcfs_c_pct": {
+          "mean": 26.023722302999442,
+          "ci": [
+            25.42826763473514,
+            26.639683644322275
+          ],
+          "n_valid": 55,
+          "n_total": 60
+        },
+        "all:bill_renegotiated_saving_pct": {
+          "mean": 9.290096481820582,
+          "ci": [
+            8.192458850817433,
+            10.222179345499955
+          ],
+          "n_valid": 55,
+          "n_total": 60
+        },
+        "all:bill_fixed_saving_pct": {
+          "mean": 0.36286670856809417,
+          "ci": [
+            0.1167352729357214,
+            0.6088484311361835
+          ],
+          "n_valid": 55,
+          "n_total": 60
+        },
+        "all:bill_renegotiated_saving_inr": {
+          "mean": 5490.783133333333,
+          "ci": [
+            4906.0271999999995,
+            6059.606360000001
+          ],
+          "n_valid": 55,
+          "n_total": 60
+        },
+        "all:bill_fixed_saving_inr": {
+          "mean": 242.08046666666667,
+          "ci": [
+            92.50434666666668,
+            389.38451333333336
+          ],
+          "n_valid": 55,
+          "n_total": 60
+        }
+      }
     }
   },
   "problems": [],

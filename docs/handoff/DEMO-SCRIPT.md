@@ -108,7 +108,7 @@ main-study slide is filled from `MAIN-RESULTS.md` once P6 is done; until then, *
 
 **Upload JSON.** Instances are plain JSON (see `examples/`), so a plant's own jobs and machines can be entered.
 
-## 6. Main study (1 min): 540 instances of 8 × 3 (MAIN-RESULTS.md; 12 × 4 pending)
+## 6. Main study (1 min): 540 instances of 8 × 3 plus 60 of 12 × 4 (MAIN-RESULTS.md)
 Show figures F1 and F4 from `results/main_analysis/figures/`. Speak to four numbers (CV ≤ 0.35, KERC ρ ₹13.46, all exact):
 * **A lower peak is possible in 79 % of instances.** In almost all of them it already pays at KERC rates; the exact
   break-even median is ₹3.18/kW per shift.
@@ -118,6 +118,7 @@ Show figures F1 and F4 from `results/main_analysis/figures/`. Speak to four numb
   result is negative.
 * **Simple rules are near-optimal only when all jobs draw the same power.** Otherwise the optimiser is 13–21 % cheaper on
   average.
+* **The 12 × 4 shop shows the same picture:** a 9.3 % saving, ₹5,491 per month renegotiated vs ₹242 fixed.
 
 ## 7. Honest scope (say it before they ask)
 * **Hardware:** a 12 V testbed was designed but not built. Nothing was physically measured; this is a software demonstration.

@@ -606,3 +606,37 @@ done: {'total': 540, 'skipped': 15, 'ran': 525}  ->  results/main_m3/results.csv
 [runner] 42/60 g0w2c0s002   [elapsed 1:57]
 [runner] 43/60 g0w2c0s003   [elapsed 1:57]
 [runner] 44/60 g0w2c0s004   [elapsed 1:58]
+[main] 2026-11-27T19:18:08Z start; workers=2; python 3.13.18; ortools 9.15.6755; commit b72b743
+[check] main-m3-smoke/g0w0c0s000: MATCH (3.3 s)
+[check] main-m3-smoke/g0w3c0s000: MATCH (3.7 s)
+[check] main-m3-smoke/g0w2c0s000: MATCH (5.1 s)
+[check] main-m4-smoke/g0w2c0s001: MATCH (17.7 s)
+[check] main-m4-smoke/g0w2c0s000: MATCH (17.9 s)
+[check] main-m4-smoke/g0w0c0s000: MATCH (25.8 s)
+[check] RESULT: all checked instances match the reference smoke results.
+[main] block main-m3 start 2026-11-27T19:19:28Z
+[runner] design=main-m3-v1 digest=56e0f2f2f3455ffd tasks=540 already_done=540 to_run=0 workers=2   [elapsed 0:00]
+done: {'total': 540, 'skipped': 540, 'ran': 0}  ->  results/main_m3/results.csv   [elapsed 0:00]
+[main] block main-m3 end 2026-11-27T19:19:29Z exit=0 wall=1 s
+[main] block main-m4 start 2026-11-27T19:19:29Z
+[runner] design=main-m4-v1 digest=e5bfe31d5230171c tasks=60 already_done=44 to_run=16 workers=2   [elapsed 0:00]
+[runner] 45/60 g0w2c0s005   [elapsed 0:00]
+[runner] 46/60 g0w2c0s006   [elapsed 0:00]
+[runner] 47/60 g0w2c0s007   [elapsed 0:00]
+[runner] 48/60 g0w2c0s008   [elapsed 0:01]
+[runner] 49/60 g0w2c0s009   [elapsed 0:01]
+[runner] 50/60 g0w1c1s009   [elapsed 0:02]
+[runner] 51/60 g0w2c1s000   [elapsed 0:05]
+[runner] 52/60 g0w2c1s001   [elapsed 0:06]
+[runner] 53/60 g0w2c1s002   [elapsed 0:06]
+[runner] 54/60 g0w2c1s003   [elapsed 0:06]
+[runner] 55/60 g0w2c1s004   [elapsed 0:07]
+[runner] 56/60 g0w2c1s006   [elapsed 0:09]
+[runner] 57/60 g0w2c1s005   [elapsed 0:10]
+[runner] 58/60 g0w2c1s008   [elapsed 0:11]
+[runner] 59/60 g0w2c1s007   [elapsed 0:13]
+[runner] 60/60 g0w2c1s009   [elapsed 0:18]
+done: {'total': 60, 'skipped': 44, 'ran': 16}  ->  results/main_m4/results.csv   [elapsed 0:18]
+[main] block main-m4 end 2026-11-27T19:38:20Z exit=0 wall=1130 s
+[main] 2026-11-27T19:38:20Z finished both blocks in 0.31 h.
+[main] Next: git add results/main_m3 results/main_m4 results/main_run; git commit -m "P5: main run"; git push origin phase3-experiments

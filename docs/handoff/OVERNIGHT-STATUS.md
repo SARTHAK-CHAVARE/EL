@@ -1,17 +1,16 @@
 # OVERNIGHT-STATUS
 
-_Last updated: 2026-11-28 ~00:30 IST. Branch `phase3-experiments`. GitHub has `ea8a0a4`; newer commits are in
-`EL-phase3-p6.bundle`._
+_Last updated: 2026-11-28 ~01:30 IST. Branch `phase3-experiments`. Newer commits than GitHub's are in the latest bundle._
 
 ## Stage status
 | Stage | Status | Evidence |
 |---|---|---|
 | P0–P4 | Done | earlier docs |
-| P5: main run | **M3 complete (540/540, Linux, this session). M4: 44/60.** The run was stopped by the 2-hour background limit; it is resumable. | `results/main_m3/`, `results/main_m4/parts/`, `results/main_run/` |
-| P6: analysis | **M3 done** (0 problems). M4 is added when complete. | `MAIN-RESULTS.md`, `results/main_analysis/` |
+| P5: main run | **Complete: M3 540/540, M4 60/60** (Linux, this session; resumed once after the 2-hour background limit) | `results/main_m3/`, `results/main_m4/`, `results/main_run/` |
+| P6: analysis | **Done** (both blocks, 0 problems; M4 fronts 55/60; two §12 items observed and stated) | `MAIN-RESULTS.md`, `results/main_analysis/` |
 | P7: prototype | Done | `07_src/app/` |
 | P9: demo script | Done; the main-study slide is filled with M3 | `DEMO-SCRIPT.md` |
-| Remaining | Finish M4 (16 instances, about 15–20 min) and re-run the analysis; slides/poster; report | — |
+| Remaining | Slides/poster (P9), report and final package (P10) | — |
 
 The Windows check on your PC (27 Nov) differed from the Linux smoke results. The differences were in by-product columns
 (sum of completion times, A's energy cost) plus one lost proof on a 12 × 4 instance. All official results come from this

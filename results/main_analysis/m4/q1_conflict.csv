@@ -1,0 +1,7 @@
+subset,grouping,level,n,reduction_vs_B_share,reduction_undetermined,costly_tradeoff_share,tradeoff_undetermined,free_reduction_share,free_reduction_undetermined
+all,all,all,60,0.95,0,0.95,0,0.034482758620689655,2
+all,by_W,0.40,20,0.95,0,0.95,0,0.1,0
+all,by_W,0.55,20,0.9,0,0.9,0,0.0,0
+all,by_W,0.70,20,1.0,0,1.0,0,0.0,2
+all,by_CV,0,30,1.0,0,1.0,0,0.0,0
+all,by_CV,0.35,30,0.9,0,0.9,0,0.07142857142857142,2
