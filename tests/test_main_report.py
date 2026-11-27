@@ -63,3 +63,11 @@ def test_missing_instances_are_counted_not_dropped(tmp_path):
     assert b["instances_missing"] == ["g0w0c0s000"]
     pr = pd.read_csv(tmp_path / "o" / "m4-smoke" / "per_rho.csv")
     assert (pr[pr.instance_id == "g0w0c0s000"].sav_B_reason == "missing").all()
+
+
+def test_figures_render_from_analysis_outputs(out, tmp_path):
+    import main_figures
+    o, _ = out
+    assert main_figures.main(["--analysis", str(o), "--block", "m3-smoke", "--out", str(tmp_path)]) == 0
+    assert sorted(p.name for p in tmp_path.glob("*.png")) == [
+        "f1_saving_vs_rho.png", "f2_break_even_ecdf.png", "f3_decomposition.png", "f4_monthly_bill.png"]
