@@ -47,10 +47,10 @@ with st.sidebar:
     source = st.radio("Instance", ["Example", "Generate", "Upload JSON"], horizontal=True)
     raw = None
     if source == "Example":
-        names = {json.loads(p.read_text()).get("name", p.stem): p for p in EXAMPLES}
+        names = {json.loads(p.read_text(encoding="utf-8")).get("name", p.stem): p for p in EXAMPLES}
         default = next((i for i, p in enumerate(names.values()) if p.stem == "benchmark"), 0)
         pick = st.selectbox("Example", list(names), index=default)
-        raw = json.loads(names[pick].read_text())
+        raw = json.loads(names[pick].read_text(encoding="utf-8"))
     elif source == "Generate":
         c1, c2 = st.columns(2)
         size = c1.selectbox("Size (jobs x machines)", ["8x3", "12x4"])

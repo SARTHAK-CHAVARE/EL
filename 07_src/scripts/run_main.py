@@ -80,7 +80,7 @@ def compare_rows(expected, got, ignore=TIMING_COLUMNS):
 
 
 def _read(path: Path):
-    with open(path, newline="") as fh:
+    with open(path, newline="", encoding="utf-8") as fh:
         return list(csv.DictReader(fh))
 
 
@@ -124,14 +124,14 @@ def main(argv=None) -> int:
         logf.flush()
 
     env_path = RUN_DIR / "environment.json"
-    record = json.loads(env_path.read_text()) if env_path.exists() else {"invocations": []}
+    record = json.loads(env_path.read_text(encoding="utf-8")) if env_path.exists() else {"invocations": []}
     inv = {"environment": environment(a.workers)}
     record["invocations"].append(inv)
     log(f"[main] {utc()} start; workers={a.workers}; python {platform.python_version()}; ortools "
         f"{inv['environment']['ortools']}; commit {inv['environment']['git_commit'][:7]}")
 
     def save():
-        env_path.write_text(json.dumps(record, indent=2))
+        env_path.write_text(json.dumps(record, indent=2), encoding="utf-8")
 
     save()
     if not a.skip_check:

@@ -58,7 +58,7 @@ def instance_from_dict(d: dict) -> Instance:
 
 
 def load_instance(src: PathOrDict) -> Instance:
-    d = src if isinstance(src, dict) else json.loads(Path(src).read_text())
+    d = src if isinstance(src, dict) else json.loads(Path(src).read_text(encoding="utf-8"))
     return instance_from_dict(d)
 
 

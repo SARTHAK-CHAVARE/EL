@@ -47,10 +47,10 @@ def test_meta_and_formula_agree_for_sampled_full_design_cells():
 
 
 def test_spec002_states_the_implemented_definition_only():
-    text = (ROOT / "docs/handoff/SPEC-002-experiments.md").read_text()
+    text = (ROOT / "docs/handoff/SPEC-002-experiments.md").read_text(encoding="utf-8")
     assert "Σ_j min_m p_jm / (M·T)" in text
     assert not re.search(r"min_m\(p_jm\s*·\s*P_jm\)", text), "energy-weighted W formula must not appear in SPEC-002"
-    design_src = (ROOT / "07_src/experiments/design.py").read_text()
+    design_src = (ROOT / "07_src/experiments/design.py").read_text(encoding="utf-8")
     assert "sum_j min_m p_jm / (M*D)" in design_src
 
 

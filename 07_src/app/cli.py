@@ -38,7 +38,7 @@ def _fmt_rows(rows):
 
 
 def cmd_solve(a) -> int:
-    raw = json.loads(Path(a.instance).read_text())
+    raw = json.loads(Path(a.instance).read_text(encoding="utf-8"))
     inst = load_instance(raw)
     start = raw.get("start_time")
     assumptions = BillingAssumptions(days_per_month=a.days, power_factor=Fraction(str(a.pf)))
