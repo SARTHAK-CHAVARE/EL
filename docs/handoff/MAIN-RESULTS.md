@@ -126,7 +126,7 @@ With a **fixed contract demand, most of the saving disappears** (a §12 item, ob
 | Best rule within 1 % of C on ≥ 90 % (S3) | No (33.6 %) |
 | Fixed-contract-demand bills erase most of the savings | **Yes:** ₹127 vs ₹3,345 per month; negative at high workload. Reported as a main finding. |
 | Front ≠ direct C at ρ = 14 where both proven | No (531/531) |
-| Exact-set and all-instance estimates diverge (> 1 point) | No (max 0.57) |
+| M3: exact-set and all-instance estimates diverge (> 1 point) | No (max 0.57) |
 | M4 pattern differs from M3 at shared settings | **Yes, in the workload trend** (§7 below) |
 | M4: exact-set vs all-instance (> 1 point) | **Yes, one cell** (W 0.70, CV 0.35; up to 2.42 points); stated in §7 |
 
@@ -145,7 +145,7 @@ With a **fixed contract demand, most of the saving disappears** (a §12 item, ob
 | Question | Result |
 |---|---|
 | Peak reduction possible | 95 % of instances; costly trade-off 95 % |
-| Exact break-even | 52 exact, median ₹2.87/kW per shift (IQR 1.35–5.31, max 6.00). 5 upper bounds (2.59–7.00; listed, not pooled); 3 no-reduction. Pays at KERC rates in 95 %. |
+| Exact break-even | 52 exact, median ₹2.87/kW per shift (IQR 1.35–5.31, max 6.00). 5 upper bounds (2.59–7.00; listed, not pooled); 3 no-reduction. Pays at KERC rates in 57 of 60 (95 %): all 52 exact values and all 5 upper bounds are below ₹13.46. |
 | Saving vs energy-only B (exact set, n = 55) | **9.29 % [8.24, 10.24]**. By W 0.40 / 0.55 / 0.70: 15.19 / 7.26 / 5.42 %. By CV 0 / 0.35: 7.34 / 11.24 %. Against B_minpeak: 8.82 %. |
 | Partial monthly bill (n = 55) | Renegotiated contract demand **₹5,491 per month [4,906, 6,060]**; fixed **₹242 [93, 389]**. At W 0.40 the fixed-demand saving is −₹355. |
 | Value of exact optimisation | 8.03 % [7.05, 9.04] over the best rule: CV 0 gives 1.05 %, CV 0.35 gives 15.01 %. S3 not triggered (best rule within 1 % on 30.9 %). |
